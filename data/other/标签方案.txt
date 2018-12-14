@@ -1,0 +1,4 @@
+BIO
+BIOUL
+IOB1
+BMES：B:开头 M:中间  E:结束 ,S:单个

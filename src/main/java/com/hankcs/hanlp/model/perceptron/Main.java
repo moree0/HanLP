@@ -16,9 +16,7 @@ import com.hankcs.hanlp.model.perceptron.cli.Argument;
 import com.hankcs.hanlp.model.perceptron.common.TaskType;
 import com.hankcs.hanlp.corpus.document.sentence.Sentence;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -26,12 +24,23 @@ import static java.lang.System.out;
 
 /**
  * @author hankcs
+ *
+ * 获得标注pku98语料，采用hanlp 词性和BEMS标签  执行
+ * -task TAG -train -reference data/test/pku98/199801.txt -model data/test/perceptron/pos.bin
+ * 训练结构化感知机分词
+ * -task CWS -train -reference data/test/pku98/199801.txt -model data/test/perceptron/cws.bin
+ * 训练词性标注
+ * -task POS -train -reference data/test/pku98/199801.txt -model data/test/perceptron/pos.bin
+ * 训练命名实体识别
+ * -task NER -train -reference data/test/pku98/199801.txt -model data/test/perceptron/ner.bin
+ *
+ *
  */
 public class Main
 {
     private static class Option
     {
-        @Argument(description = "任务类型:CWS|POS|NER")
+        @Argument(description = "任务类型:CWS|POS|NER|TAG")
         TaskType task = TaskType.CWS;
 
         @Argument(description = "执行训练任务")
@@ -89,6 +98,19 @@ public class Main
                     break;
                 case NER:
                     trainer = new NERTrainer();
+                    break;
+                case TAG:
+                    HanLP.Config.DEBUG = true;
+                    try {
+                        File f = new File("data/test/tag/pku98_tag");
+                        f.delete();
+                        f.createNewFile();
+                        OutputStreamWriter write = new OutputStreamWriter(new FileOutputStream(f), "UTF-8");
+                        HanLP.Config.fileWriter = new BufferedWriter(write);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    trainer =  new NERTrainer();
                     break;
             }
             if (option.train)

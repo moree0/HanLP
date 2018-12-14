@@ -11,6 +11,7 @@
  */
 package com.hankcs.hanlp.model.perceptron.utility;
 
+import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.corpus.io.IOUtil;
 import com.hankcs.hanlp.dictionary.other.CharTable;
 import com.hankcs.hanlp.model.perceptron.PerceptronSegmenter;
@@ -355,6 +356,31 @@ public class Utility
                 }
             }
         }
+        if(HanLP.Config.DEBUG) {
+            for(String[] word:collector) {
+                String line = null;
+                if(word[2].contains("-")) {
+                    line =  word[0]+"\t"+word[2]+"\n";
+                }else {
+                    line =  word[0]+"\t"+word[2]+"-"+word[1]+"\n";
+                }
+
+                try {
+                    HanLP.Config.fileWriter.append(line);
+                } catch (IOException e) {
+                     e.printStackTrace();
+                }
+            }
+            if(collector.size()>0) {
+                try {
+                    HanLP.Config.fileWriter.append("\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
         return collector;
     }
 

@@ -58,6 +58,14 @@ public class HanLP
      */
     public static final class Config
     {
+
+
+        /**
+         * 文件流
+         */
+        public static   BufferedWriter fileWriter =null;
+
+
         /**
          * 开发模式
          */

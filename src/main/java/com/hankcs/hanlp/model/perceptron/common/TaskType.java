@@ -15,5 +15,5 @@ package com.hankcs.hanlp.model.perceptron.common;
  */
 public enum TaskType
 {
-    CWS, POS, NER, CLASSIFICATION
+    CWS, POS, NER, CLASSIFICATION,TAG
 }

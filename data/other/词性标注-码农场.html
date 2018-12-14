@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)http://www.hankcs.com/nlp/part-of-speech-tagging.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="dns-prefetch" href="http://apps.bdimg.com/">
+<meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-title" content="码农场">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<title>词性标注-码农场</title>
+<link rel="dns-prefetch" href="http://apps.bdimg.com/">
+<link rel="dns-prefetch" href="http://s.w.org/">
+		<script async="" src="./词性标注-码农场_files/analytics.js.下载"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/www.hankcs.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.9"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56760,9792,65039],[55358,56760,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./词性标注-码农场_files/wp-emoji-release.min.js.下载" type="text/javascript" defer=""></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="_bootstrap-css" href="./词性标注-码农场_files/bootstrap.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="_fontawesome-css" href="./词性标注-码农场_files/font-awesome.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="_main-css" href="./词性标注-码农场_files/main.css" type="text/css" media="all">
+<script type="text/javascript" src="./词性标注-码农场_files/jquery.min.js.下载"></script>
+<link rel="https://api.w.org/" href="http://www.hankcs.com/wp-json/">
+<link rel="prev" title="层叠HMM-Viterbi角色标注模型下的机构名识别" href="http://www.hankcs.com/nlp/ner/place-name-recognition-model-of-the-stacked-hmm-viterbi-role-labeling.html">
+<link rel="next" title="汉语树库" href="http://www.hankcs.com/nlp/corpus/chinese-treebank.html">
+<link rel="canonical" href="http://www.hankcs.com/nlp/part-of-speech-tagging.html">
+<link rel="shortlink" href="http://www.hankcs.com/?p=4348">
+<link rel="alternate" type="application/json+oembed" href="http://www.hankcs.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.hankcs.com%2Fnlp%2Fpart-of-speech-tagging.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.hankcs.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.hankcs.com%2Fnlp%2Fpart-of-speech-tagging.html&amp;format=xml">
+<meta name="keywords" content="HMM, 中文分词, 维特比算法, 中文分词, 自然语言处理">
+<meta name="description" content="词性标注（Part-of-Speech tagging 或POS tagging)，又称词类标注或者简称标注，是指为分词结果中的每个单词标注一个正确的词性的程序，也即确定每个词是名词、动词、形容词或其他词性的过程。在汉语中，词性标注比较简单，因为汉语词汇词性多变的情况比较少见，大多词语只有一个词性，或者出现频次最高的词性远远高于第二位的词性。据说，只需选取最">
+<link rel="icon" href="http://www.hankcs.com/wp-content/uploads/2017/04/cropped-Hankcs_512-32x32.png" sizes="32x32">
+<link rel="icon" href="http://www.hankcs.com/wp-content/uploads/2017/04/cropped-Hankcs_512-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon-precomposed" href="http://www.hankcs.com/wp-content/uploads/2017/04/cropped-Hankcs_512-180x180.png">
+<meta name="msapplication-TileImage" content="http://www.hankcs.com/wp-content/uploads/2017/04/cropped-Hankcs_512-270x270.png">
+<link rel="shortcut icon" href="http://www.hankcs.com/favicon.ico">
+<!--[if lt IE 9]><script src="http://www.hankcs.com/wp-content/themes/dux/js/libs/html5.min.js"></script><![endif]-->
+<!--
+	generated 82899 seconds ago
+	generated in 0.291 seconds
+	served from batcache in 0.003 seconds
+	expires in 3501 seconds
+-->
+<script async="" data-requirecontext="_" data-requiremodule="main" src="./词性标注-码农场_files/main.js.下载"></script><script src="./词性标注-码农场_files/share.js.下载"></script><script async="" data-requirecontext="_" data-requiremodule="lazyload" src="./词性标注-码农场_files/lazyload.min.js.下载"></script><script async="" data-requirecontext="_" data-requiremodule="prettyprint" src="./词性标注-码农场_files/prettyprint.js.下载"></script><script async="" data-requirecontext="_" data-requiremodule="signpop" src="./词性标注-码农场_files/signpop.js.下载"></script><script async="" data-requirecontext="_" data-requiremodule="comment" src="./词性标注-码农场_files/comment.js.下载"></script><link href="./词性标注-码农场_files/share.css" rel="styleSheet" type="text/css"></head>
+<body class="post-template-default single single-post postid-4348 single-format-standard comment-open site-layout-2">
+<header class="header">
+	<div class="container">
+		<div class="logo"><a href="http://www.hankcs.com/" title="码农场-自然语言处理、机器学习算法"><img src="./词性标注-码农场_files/logo.png">码农场</a></div>		<a href="http://www.hankcs.com/" title="码农场-自然语言处理、机器学习算法" class="brand">放牧代码和思想
+<br>专注自然语言处理、机器学习算法</a>		<ul class="site-nav site-navbar">
+			<li id="menu-item-1834" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1834"><a href="http://www.hankcs.com/program/cpp/">C++</a></li>
+<li id="menu-item-1835" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1835"><a href="http://www.hankcs.com/program/java/">Java</a></li>
+<li id="menu-item-5754" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5754"><a href="http://www.hankcs.com/ml/">机器学习</a></li>
+<li id="menu-item-2954" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children menu-item-2954"><a href="http://www.hankcs.com/nlp/">NLP</a>
+<ul class="sub-menu">
+	<li id="menu-item-4344" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4344"><a href="http://www.hankcs.com/nlp/corpus/">语料库</a></li>
+	<li id="menu-item-4342" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-4342"><a href="http://www.hankcs.com/nlp/segment/">中文分词</a></li>
+	<li id="menu-item-4343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4343"><a href="http://www.hankcs.com/nlp/ner/">命名实体识别</a></li>
+	<li id="menu-item-4479" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4479"><a href="http://www.hankcs.com/nlp/parsing/">句法分析</a></li>
+</ul>
+</li>
+<li id="menu-item-1837" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1837"><a href="http://www.hankcs.com/program/algorithm/">算法</a></li>
+<li id="menu-item-1839" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1839"><a href="http://www.hankcs.com/software/">软件</a></li>
+<li id="menu-item-1838" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1838"><a href="http://www.hankcs.com/nihongonote/">日语</a>
+<ul class="sub-menu">
+	<li id="menu-item-1860" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1860"><a href="http://www.hankcs.com/nihongonote/riyurimen/">日语入门</a></li>
+	<li id="menu-item-1861" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1861"><a href="http://www.hankcs.com/nihongonote/listening/">日语听力</a></li>
+	<li id="menu-item-1863" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1863"><a href="http://www.hankcs.com/nihongonote/tekusuto/">日语综合教程</a>
+	<ul class="sub-menu">
+		<li id="menu-item-2190" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2190"><a href="http://www.hankcs.com/nihongonote/tekusuto/disance/">第三册</a></li>
+		<li id="menu-item-2192" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2192"><a href="http://www.hankcs.com/nihongonote/tekusuto/daiyonnsatu/">第四册</a></li>
+		<li id="menu-item-2191" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2191"><a href="http://www.hankcs.com/nihongonote/tekusuto/5/">第五册</a></li>
+		<li id="menu-item-2702" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2702"><a href="http://www.hankcs.com/nihongonote/tekusuto/%e7%ac%ac%e5%85%ad%e5%86%8c/">第六册</a></li>
+		<li id="menu-item-3604" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3604"><a href="http://www.hankcs.com/nihongonote/tekusuto/%e7%ac%ac%e4%b8%83%e5%86%8c/">第七册</a></li>
+	</ul>
+</li>
+	<li id="menu-item-1859" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1859"><a href="http://www.hankcs.com/nihongonote/fd2/">新编日语阅读文选</a>
+	<ul class="sub-menu">
+		<li id="menu-item-2187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2187"><a href="http://www.hankcs.com/nihongonote/fd2/c1/">第一册</a></li>
+		<li id="menu-item-2189" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2189"><a href="http://www.hankcs.com/nihongonote/fd2/c2/">第二册</a></li>
+		<li id="menu-item-2188" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2188"><a href="http://www.hankcs.com/nihongonote/fd2/c3/">第三册</a></li>
+	</ul>
+</li>
+	<li id="menu-item-1858" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1858"><a href="http://www.hankcs.com/nihongonote/jpkaiwa/">日语商务贸易会话</a></li>
+</ul>
+</li>
+<li id="menu-item-1843" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1843"><a href="http://www.hankcs.com/about/">关于</a></li>
+							<li class="navto-search"><a href="javascript:;" class="search-show active"><i class="fa fa-search"></i></a></li>
+					</ul>
+		<div class="topbar">
+			<ul class="site-nav topmenu">
+				<li id="menu-item-5755" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5755"><a href="http://www.hankcs.com/about/#comments"><i class="fa fa-comment"></i> 留言板</a></li>
+				<li><a target="_blank" rel="external nofollow" href="https://github.com/hankcs"><i class="fa fa-github-alt"></i> GitHub</a></li>                                <li><a target="_blank" rel="external nofollow" href="http://weibo.com/hankcs"><i class="fa fa-weibo"></i> 微博</a></li>                                <li><a target="_blank" rel="external nofollow" href="https://twitter.com/hankcs"><i class="fa fa-twitter"></i> Twitter</a></li>                                <li><a target="_blank" href="http://blog.hankcs.com/"><i class="fa fa-language"></i> English</a></li>                <li><a target="_blank" href="http://www.hankcs.com/feed"><i class="fa fa-rss"></i> RSS</a></li>			</ul>
+							&nbsp; &nbsp; <i class="fa fa-bullhorn url"></i> 博主不用扣扣，公事请博客留言，私事请微博私信。开源项目一律GitHub见，发错地方恕不回复，谢谢。					</div>
+		<i class="fa fa-bars m-icon-nav"></i>
+	</div>
+</header>
+<div class="site-search">
+	<div class="container">
+		<form method="get" class="site-search-form" action="http://www.hankcs.com/"><input class="search-input" name="s" type="text" placeholder="输入关键字" value=""><button class="search-btn" type="submit"><i class="fa fa-search"></i></button></form>	</div>
+</div><section class="container">
+	<div class="content-wrap">
+	<div class="content">
+				<header class="article-header">
+			<h1 class="article-title"><a href="http://www.hankcs.com/nlp/part-of-speech-tagging.html">词性标注</a></h1>
+			<div class="article-meta">
+				<span class="item">
+					<a href="http://www.hankcs.com/">码农场</a> <small>&gt;</small> <a href="http://www.hankcs.com/nlp/">自然语言处理</a> &gt; <a href="http://www.hankcs.com/nlp/segment/">中文分词</a><span class="muted"></span>				</span>
+				<span class="item">2014-11-19</span>
+																<span class="item post-views">阅读(12580)</span>				<span class="item"><a class="pc" href="http://www.hankcs.com/nlp/part-of-speech-tagging.html#respond">评论(41)</a></span>				<span class="item"></span>
+			</div>
+		</header>
+		<article class="article-content">
+			<div class="asb asb-post asb-post-01"><script async="" src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 文章页 - 页面标题下 728 90 -->
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-1152644711996772" data-ad-slot="5413029241"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>			<div class="post_nav" style="width: 0px;"><div class="post_nav_side" style="height: 100%;"><div class="post_nav_top"><p>目录</p></div><div class="post_nav_bottom"></div><span class="post_nav_close icon-remove" title="关闭目录" style="opacity: 0; display: none;"><i class="fa fa-times"></i></span></div><ul class="post_nav_content"><li class="h2_nav"><a href="http://www.hankcs.com/nlp/part-of-speech-tagging.html#h2-0">开源项目</a><i class="post_nav_dot"></i></li>
+<li class="h2_nav"><a href="http://www.hankcs.com/nlp/part-of-speech-tagging.html#h2-1">训练</a><i class="post_nav_dot"></i></li>
+<li class="h3_nav"><a href="http://www.hankcs.com/nlp/part-of-speech-tagging.html#h3-2">语料库</a><i class="post_nav_dot"></i></li>
+<li class="h3_nav"><a href="http://www.hankcs.com/nlp/part-of-speech-tagging.html#h3-3">单词词性频次词典</a><i class="post_nav_dot"></i></li>
+<li class="h3_nav"><a href="http://www.hankcs.com/nlp/part-of-speech-tagging.html#h3-4">转移矩阵</a><i class="post_nav_dot"></i></li>
+<li class="h2_nav"><a href="http://www.hankcs.com/nlp/part-of-speech-tagging.html#h2-5">标注</a><i class="post_nav_dot"></i></li>
+<li class="h3_nav active"><a href="http://www.hankcs.com/nlp/part-of-speech-tagging.html#h3-6">测试</a><i class="post_nav_dot"></i></li>
+<li class="h3_nav"><a href="http://www.hankcs.com/nlp/part-of-speech-tagging.html#h3-7">输出</a><i class="post_nav_dot"></i></li>
+<li class="h2_nav"><a href="http://www.hankcs.com/nlp/part-of-speech-tagging.html#h2-8">HanLP词性标注集</a><i class="post_nav_dot"></i></li>
+</ul></div><p style="text-align: center"><img src="./词性标注-码农场_files/6cbb8645jw1emgd7fyb3ij20k00f074u.jpg" title="词性标注.jpg" width="256" height="192" border="0" hspace="0" vspace="0" style="width: 256px; height: 192px;" data-tag="bdshare"></p>
+<p style="text-indent: 2em;">词性标注（Part-of-Speech tagging 或POS tagging)，又称词类标注或者简称标注，是指为分词结果中的每个单词标注一个正确的词性的程序，也即确定每个词是名词、动词、形容词或其他词性的过程。在汉语中，词性标注比较简单，因为汉语词汇词性多变的情况比较少见，大多词语只有一个词性，或者出现频次最高的词性远远高于第二位的词性。据说，只需选取最高频词性，即可实现80%准确率的中文词性标注程序。</p>
+<p style="text-indent: 2em;">利用HMM即可实现更高准确率的词性标注，本文旨在介绍HanLP中的词性标注模块。</p>
+<h2 id="h2-0"><span style="text-indent: 32px;">开源项目</span></h2>
+<p style="white-space: normal; text-indent: 2em;">本文代码已集成到HanLP中开源：<a href="https://github.com/hankcs/HanLP" _src="https://github.com/hankcs/HanLP" target="_blank" rel="external nofollow">https://github.com/hankcs/HanLP</a>&nbsp;</p>
+<p style="white-space: normal; text-indent: 2em;">欢迎访问<a href="http://hanlp.hankcs.com/?sentence=%E4%BB%96%E5%9C%A8%E6%B5%99%E6%B1%9F%E9%87%91%E5%8D%8E%E5%87%BA%E7%94%9F%EF%BC%8C%E4%BB%96%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%AB%E9%87%91%E5%8D%8E%E3%80%82" target="_blank">HanLP在线演示与可视化</a>，目前的新词法分析器可以提供比HMM更精准的词性标注。</p>
+<h2 id="h2-1">训练</h2>
+<p style="text-indent: 2em;">HanLP中使用了一阶隐马模型，在这个隐马尔可夫模型中，隐状态是词性，显状态是单词。</p>
+<h3 id="h3-2">语料库</h3>
+<p style="text-indent: 2em;">训练语料采用了2014人民日报切分语料：</p>
+<pre class="brush:plain;toolbar:false prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pun">人民网/</span><span class="pln">nz&nbsp;</span><span class="lit">1</span><span class="pun">月</span><span class="lit">1</span><span class="pun">日/</span><span class="pln">t&nbsp;</span><span class="pun">讯/</span><span class="pln">ng&nbsp;</span><span class="pun">据/</span><span class="pln">p&nbsp;</span><span class="pun">《/</span><span class="pln">w&nbsp;</span><span class="pun">[纽约/</span><span class="pln">nsf&nbsp;</span><span class="pun">时报/</span><span class="pln">n</span><span class="pun">]/</span><span class="pln">nz&nbsp;</span><span class="pun">》/</span><span class="pln">w&nbsp;</span><span class="pun">报道/</span><span class="pln">v&nbsp;</span><span class="pun">，/</span><span class="pln">w&nbsp;</span><span class="pun">美国/</span><span class="pln">nsf&nbsp;</span><span class="pun">华尔街/</span><span class="pln">nsf&nbsp;</span><span class="pun">股市/</span><span class="pln">n&nbsp;</span><span class="pun">在/</span><span class="pln">p&nbsp;</span><span class="lit">2013</span><span class="pun">年/</span><span class="pln">t&nbsp;</span><span class="pun">的/</span><span class="pln">ude1&nbsp;</span><span class="pun">最后/</span><span class="pln">f&nbsp;</span><span class="pun">一天/</span><span class="pln">mq&nbsp;</span><span class="pun">继续/</span><span class="pln">v&nbsp;</span><span class="pun">上涨/</span><span class="pln">vn&nbsp;</span><span class="pun">，/</span><span class="pln">w&nbsp;</span><span class="pun">和/</span><span class="pln">cc&nbsp;</span><span class="pun">[全球/</span><span class="pln">n&nbsp;</span><span class="pun">股市/</span><span class="pln">n</span><span class="pun">]/</span><span class="pln">nz&nbsp;</span><span class="pun">一样/</span><span class="pln">uyy&nbsp;</span><span class="pun">，/</span><span class="pln">w&nbsp;</span><span class="pun">都/</span><span class="pln">d&nbsp;</span><span class="pun">以/</span><span class="pln">p&nbsp;</span><span class="pun">[最高/</span><span class="pln">a&nbsp;</span><span class="pun">纪录/</span><span class="pln">n</span><span class="pun">]/</span><span class="pln">nz&nbsp;</span><span class="pun">或/</span><span class="pln">c&nbsp;</span><span class="pun">接近/</span><span class="pln">v&nbsp;</span><span class="pun">[最高/</span><span class="pln">a&nbsp;</span><span class="pun">纪录/</span><span class="pln">n</span><span class="pun">]/</span><span class="pln">nz&nbsp;</span><span class="pun">结束/</span><span class="pln">v&nbsp;</span><span class="pun">本/</span><span class="pln">rz&nbsp;</span><span class="pun">年/</span><span class="pln">qt&nbsp;</span><span class="pun">的/</span><span class="pln">ude1&nbsp;</span><span class="pun">交易/</span><span class="pln">vn&nbsp;</span><span class="pun">。/</span><span class="pln">w&nbsp;</span></li><li class="L1"><span class="pun">《/</span><span class="pln">w&nbsp;</span><span class="pun">[纽约/</span><span class="pln">nsf&nbsp;</span><span class="pun">时报/</span><span class="pln">n</span><span class="pun">]/</span><span class="pln">nz&nbsp;</span><span class="pun">》/</span><span class="pln">w&nbsp;</span><span class="pun">报道/</span><span class="pln">v&nbsp;</span><span class="pun">说/</span><span class="pln">v&nbsp;</span><span class="pun">，/</span><span class="pln">w&nbsp;</span><span class="pun">标普/</span><span class="pln">nz&nbsp;</span><span class="lit">500</span><span class="pun">/</span><span class="pln">m&nbsp;</span><span class="pun">指数/</span><span class="pln">n&nbsp;</span><span class="pun">今年/</span><span class="pln">t&nbsp;</span><span class="pun">上升/</span><span class="pln">vi&nbsp;</span><span class="lit">29.6</span><span class="pun">%</span><span class="str">/m&nbsp;，/</span><span class="pln">w&nbsp;</span><span class="pun">为/</span><span class="pln">p&nbsp;</span><span class="lit">1997</span><span class="pun">年/</span><span class="pln">t&nbsp;</span><span class="pun">以来/</span><span class="pln">f&nbsp;</span><span class="pun">的/</span><span class="pln">ude1&nbsp;</span><span class="pun">最大/</span><span class="pln">gm&nbsp;</span><span class="pun">涨幅/</span><span class="pln">n&nbsp;</span><span class="pun">；/</span><span class="pln">w&nbsp;</span><span class="pun">[道琼斯/</span><span class="pln">ntc&nbsp;</span><span class="pun">工业/</span><span class="pln">n&nbsp;</span><span class="pun">平均/</span><span class="pln">a&nbsp;</span><span class="pun">指数/</span><span class="pln">n</span><span class="pun">]/</span><span class="pln">nz&nbsp;</span><span class="pun">上升/</span><span class="pln">vi&nbsp;</span><span class="lit">26.5</span><span class="pun">%</span><span class="str">/m&nbsp;，/</span><span class="pln">w&nbsp;</span><span class="pun">为/</span><span class="pln">p&nbsp;</span><span class="lit">1996</span><span class="pun">年/</span><span class="pln">t&nbsp;</span><span class="pun">以来/</span><span class="pln">f&nbsp;</span><span class="pun">的/</span><span class="pln">ude1&nbsp;</span><span class="pun">最大/</span><span class="pln">gm&nbsp;</span><span class="pun">涨幅/</span><span class="pln">n&nbsp;</span><span class="pun">；/</span><span class="pln">w&nbsp;</span><span class="pun">[纳斯/</span><span class="pln">nrf&nbsp;</span><span class="pun">达/</span><span class="pln">v&nbsp;</span><span class="pun">克/</span><span class="pln">q</span><span class="pun">]/</span><span class="pln">nz&nbsp;</span><span class="pun">上涨/</span><span class="pln">vi&nbsp;</span><span class="lit">38.3</span><span class="pun">%</span><span class="str">/m&nbsp;。/</span><span class="pln">w&nbsp;</span></li><li class="L2"><span class="pun">就/</span><span class="pln">d&nbsp;</span><span class="lit">12</span><span class="pun">月</span><span class="lit">31</span><span class="pun">日/</span><span class="pln">t&nbsp;</span><span class="pun">来说/</span><span class="pln">uls&nbsp;</span><span class="pun">，/</span><span class="pln">w&nbsp;</span><span class="pun">由于/</span><span class="pln">p&nbsp;</span><span class="pun">就业/</span><span class="pln">vn&nbsp;</span><span class="pun">前景/</span><span class="pln">n&nbsp;</span><span class="pun">看好/</span><span class="pln">v&nbsp;</span><span class="pun">和/</span><span class="pln">cc&nbsp;</span><span class="pun">[经济/</span><span class="pln">n&nbsp;</span><span class="pun">增长/</span><span class="pln">v</span><span class="pun">]/</span><span class="pln">nz&nbsp;</span><span class="pun">明年/</span><span class="pln">t&nbsp;</span><span class="pun">可能/</span><span class="pln">v&nbsp;</span><span class="pun">加速/</span><span class="pln">vn&nbsp;</span><span class="pun">，/</span><span class="pln">w&nbsp;</span><span class="pun">消费者/</span><span class="pln">n&nbsp;</span><span class="pun">信心/</span><span class="pln">n&nbsp;</span><span class="pun">上升/</span><span class="pln">vi&nbsp;</span><span class="pun">。/</span><span class="pln">w&nbsp;</span><span class="pun">工商/</span><span class="pln">n&nbsp;</span><span class="pun">协进会/</span><span class="pln">nis&nbsp;</span><span class="pun">（/</span><span class="pln">w&nbsp;</span><span class="typ">ConferenceBoard</span><span class="pun">/</span><span class="pln">x&nbsp;</span><span class="pun">）/</span><span class="pln">w&nbsp;</span><span class="pun">报告/</span><span class="pln">n&nbsp;</span><span class="pun">，/</span><span class="pln">w&nbsp;</span><span class="lit">12</span><span class="pun">月/</span><span class="pln">t&nbsp;</span><span class="pun">消费者/</span><span class="pln">n&nbsp;</span><span class="pun">信心/</span><span class="pln">n&nbsp;</span><span class="pun">上升/</span><span class="pln">vi&nbsp;</span><span class="pun">到/</span><span class="pln">v&nbsp;</span><span class="lit">78.1</span><span class="pun">/</span><span class="pln">m&nbsp;</span><span class="pun">，/</span><span class="pln">w&nbsp;</span><span class="pun">明显/</span><span class="pln">a&nbsp;</span><span class="pun">高于/</span><span class="pln">v&nbsp;</span><span class="lit">11</span><span class="pun">月/</span><span class="pln">t&nbsp;</span><span class="pun">的/</span><span class="pln">ude1&nbsp;</span><span class="lit">72</span><span class="pun">/</span><span class="pln">m&nbsp;</span><span class="pun">。/</span><span class="pln">w&nbsp;</span></li><li class="L3"><span class="pun">另据/</span><span class="pln">nz&nbsp;</span><span class="pun">《/</span><span class="pln">w&nbsp;</span><span class="pun">[华尔街/</span><span class="pln">nsf&nbsp;</span><span class="pun">日报/</span><span class="pln">n</span><span class="pun">]/</span><span class="pln">nz&nbsp;</span><span class="pun">》/</span><span class="pln">w&nbsp;</span><span class="pun">报道/</span><span class="pln">v&nbsp;</span><span class="pun">，/</span><span class="pln">w&nbsp;</span><span class="lit">2013</span><span class="pun">年/</span><span class="pln">t&nbsp;</span><span class="pun">是/</span><span class="pln">vshi&nbsp;</span><span class="lit">1995</span><span class="pun">年/</span><span class="pln">t&nbsp;</span><span class="pun">以来/</span><span class="pln">f&nbsp;</span><span class="pun">[美国/</span><span class="pln">nsf&nbsp;</span><span class="pun">股市/</span><span class="pln">n</span><span class="pun">]/</span><span class="pln">nz&nbsp;</span><span class="pun">表现/</span><span class="pln">v&nbsp;</span><span class="pun">最好/</span><span class="pln">d&nbsp;</span><span class="pun">的/</span><span class="pln">ude1&nbsp;</span><span class="pun">一年/</span><span class="pln">mq&nbsp;</span><span class="pun">。/</span><span class="pln">w&nbsp;</span><span class="pun">这/</span><span class="pln">rzv&nbsp;</span><span class="pun">一年/</span><span class="pln">mq&nbsp;</span><span class="pun">里/</span><span class="pln">f&nbsp;</span><span class="pun">，/</span><span class="pln">w&nbsp;</span><span class="pun">投资/</span><span class="pln">v&nbsp;</span><span class="pun">[美国/</span><span class="pln">nsf&nbsp;</span><span class="pun">股市/</span><span class="pln">n</span><span class="pun">]/</span><span class="pln">nz&nbsp;</span><span class="pun">的/</span><span class="pln">ude1&nbsp;</span><span class="pun">明智/</span><span class="pln">a&nbsp;</span><span class="pun">做法/</span><span class="pln">n&nbsp;</span><span class="pun">是/</span><span class="pln">vshi&nbsp;</span><span class="pun">追/</span><span class="pln">v&nbsp;</span><span class="pun">着/</span><span class="pln">uzhe&nbsp;</span><span class="pun">“/</span><span class="pln">w&nbsp;</span><span class="pun">傻钱/</span><span class="pln">nz&nbsp;</span><span class="pun">”/</span><span class="pln">w&nbsp;</span><span class="pun">跑/</span><span class="pln">v&nbsp;</span><span class="pun">。/</span><span class="pln">w&nbsp;</span><span class="pun">所谓/</span><span class="pln">v&nbsp;</span><span class="pun">的/</span><span class="pln">ude1&nbsp;</span><span class="pun">“/</span><span class="pln">w&nbsp;</span><span class="pun">傻钱/</span><span class="pln">nz&nbsp;</span><span class="pun">”/</span><span class="pln">w&nbsp;</span><span class="pun">策略/</span><span class="pln">n&nbsp;</span><span class="pun">，/</span><span class="pln">w&nbsp;</span><span class="pun">其实/</span><span class="pln">d&nbsp;</span><span class="pun">就是/</span><span class="pln">v&nbsp;</span><span class="pun">买入/</span><span class="pln">vn&nbsp;</span><span class="pun">并/</span><span class="pln">cc&nbsp;</span><span class="pun">持有/</span><span class="pln">v&nbsp;</span><span class="pun">美国/</span><span class="pln">nsf&nbsp;</span><span class="pun">股票/</span><span class="pln">n&nbsp;</span><span class="pun">这样/</span><span class="pln">rzv&nbsp;</span><span class="pun">的/</span><span class="pln">ude1&nbsp;</span><span class="pun">普通/</span><span class="pln">a&nbsp;</span><span class="pun">组合/</span><span class="pln">vn&nbsp;</span><span class="pun">。/</span><span class="pln">w&nbsp;</span><span class="pun">这个/</span><span class="pln">rz&nbsp;</span><span class="pun">策略/</span><span class="pln">n&nbsp;</span><span class="pun">要/</span><span class="pln">v&nbsp;</span><span class="pun">比/</span><span class="pln">p&nbsp;</span><span class="pun">[对冲/</span><span class="pln">vn&nbsp;</span><span class="pun">基金/</span><span class="pln">n</span><span class="pun">]/</span><span class="pln">nz&nbsp;</span><span class="pun">和/</span><span class="pln">cc&nbsp;</span><span class="pun">其它/</span><span class="pln">rz&nbsp;</span><span class="pun">专业/</span><span class="pln">n&nbsp;</span><span class="pun">投资者/</span><span class="pln">nnd&nbsp;</span><span class="pun">使用/</span><span class="pln">v&nbsp;</span><span class="pun">的/</span><span class="pln">ude1&nbsp;</span><span class="pun">更为/</span><span class="pln">d&nbsp;</span><span class="pun">复杂/</span><span class="pln">a&nbsp;</span><span class="pun">的/</span><span class="pln">ude1&nbsp;</span><span class="pun">投资/</span><span class="pln">vn&nbsp;</span><span class="pun">方法/</span><span class="pln">n&nbsp;</span><span class="pun">效果/</span><span class="pln">n&nbsp;</span><span class="pun">好/</span><span class="pln">a&nbsp;</span><span class="pun">得/</span><span class="pln">ude3&nbsp;</span><span class="pun">多/</span><span class="pln">a&nbsp;</span><span class="pun">。/</span><span class="pln">w&nbsp;</span><span class="pun">（/</span><span class="pln">w&nbsp;</span><span class="pun">老/</span><span class="pln">a&nbsp;</span><span class="pun">任/</span><span class="pln">v&nbsp;</span><span class="pun">）/</span><span class="pln">w</span></li></ol></pre>
+<h3 id="h3-3">单词词性频次词典</h3>
+<p style="text-indent: 2em;">统计所有单词的各个词性的出现频次，得到核心词典：</p>
+<pre class="brush:plain;toolbar:false prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pun">爱</span><span class="pln">&nbsp;v&nbsp;</span><span class="lit">3622</span><span class="pln">&nbsp;vn&nbsp;</span><span class="lit">598</span></li><li class="L1"><span class="pun">爱因斯坦</span><span class="pln">&nbsp;nrf&nbsp;</span><span class="lit">20</span></li><li class="L2"><span class="pun">爱国</span><span class="pln">&nbsp;a&nbsp;</span><span class="lit">178</span></li><li class="L3"><span class="pun">爱国主义</span><span class="pln">&nbsp;n&nbsp;</span><span class="lit">68</span></li><li class="L4"><span class="pun">飙升</span><span class="pln">&nbsp;v&nbsp;</span><span class="lit">200</span><span class="pln">&nbsp;vn&nbsp;</span><span class="lit">8</span></li><li class="L5"><span class="pun">顺风</span><span class="pln">&nbsp;vi&nbsp;</span><span class="lit">27</span><span class="pln">&nbsp;vn&nbsp;</span><span class="lit">2</span></li><li class="L6"><span class="pun">顺风吹火</span><span class="pln">&nbsp;i&nbsp;</span><span class="lit">1</span></li><li class="L7"><span class="pun">顺风球</span><span class="pln">&nbsp;n&nbsp;</span><span class="lit">1</span></li><li class="L8"><span class="pun">顺风耳</span><span class="pln">&nbsp;n&nbsp;</span><span class="lit">4</span></li><li class="L9"><span class="pun">顺风车</span><span class="pln">&nbsp;nz&nbsp;</span><span class="lit">126</span></li><li class="L0"><span class="pun">购</span><span class="pln">&nbsp;v&nbsp;</span><span class="lit">217</span><span class="pln">&nbsp;vg&nbsp;</span><span class="lit">151</span><span class="pln">&nbsp;vn&nbsp;</span><span class="lit">106</span></li><li class="L1"><span class="pun">购书</span><span class="pln">&nbsp;v&nbsp;</span><span class="lit">7</span><span class="pln">&nbsp;vn&nbsp;</span><span class="lit">5</span></li><li class="L2"><span class="pun">购买</span><span class="pln">&nbsp;v&nbsp;</span><span class="lit">3875</span><span class="pln">&nbsp;vn&nbsp;</span><span class="lit">637</span></li><li class="L3"><span class="pun">购买人</span><span class="pln">&nbsp;n&nbsp;</span><span class="lit">7</span></li><li class="L4"><span class="pun">购买力</span><span class="pln">&nbsp;n&nbsp;</span><span class="lit">42</span></li><li class="L5"><span class="pun">购买户</span><span class="pln">&nbsp;n&nbsp;</span><span class="lit">1</span></li><li class="L6"><span class="pun">购买欲</span><span class="pln">&nbsp;n&nbsp;</span><span class="lit">1</span></li><li class="L7"><span class="pun">购买群</span><span class="pln">&nbsp;n&nbsp;</span><span class="lit">1</span></li><li class="L8"><span class="pun">购买者</span><span class="pln">&nbsp;n&nbsp;</span><span class="lit">93</span></li><li class="L9"><span class="pun">购买证</span><span class="pln">&nbsp;n&nbsp;</span><span class="lit">1</span></li><li class="L0"><span class="pun">购入</span><span class="pln">&nbsp;v&nbsp;</span><span class="lit">115</span><span class="pln">&nbsp;vn&nbsp;</span><span class="lit">18</span></li><li class="L1"><span class="pun">……</span></li></ol></pre>
+<p style="text-indent: 2em;">从词典可以看出，汉语词汇的确词性单一，且存在歧义的词性多集中在“动词v”和“名动词vn”上。另外，我拿到的<span style="text-indent: 32px;">2014人民日报切分语料感觉没有经过严格的人工校对，许多单词词性单一，且存在不少错误。也许等我有机会（经济实力或学术背景），可以拿更高质量的语料来训练。所幸HanLP同时维护了一个通用的语料处理包，暂且埋下伏笔吧。</span></p>
+<h3 id="h3-4">转移矩阵</h3>
+<p style="text-indent: 2em;">统计每个标签的转移频次，得到如下转移矩阵：</p>
+<p style="text-align: center"><img src="./词性标注-码农场_files/6cbb8645jw1emgcq5j6cvj217i0frtfv.jpg" title="词性标注 转移矩阵.png" data-tag="bdshare"></p>
+<p style="text-indent: 2em;">事实上，完整的转移矩阵非常大，请下载观看：<img src="./词性标注-码农场_files/icon_xls.gif" data-tag="bdshare"><a href="http://www.hankcs.com/wp-content/uploads/2014/11/%E8%AF%8D%E6%80%A7%E6%A0%87%E6%B3%A8-%E8%BD%AC%E7%A7%BB%E7%9F%A9%E9%98%B5.xls" target="_self" title="词性标注 转移矩阵.xls 下载" textvalue="词性标注 转移矩阵.xls">词性标注 转移矩阵.xls</a></p>
+<h2 id="h2-5">标注<br></h2>
+<p style="text-indent: 2em;"><span style="text-indent: 32px;">利用上述转移矩阵和核心词典词频可以计算出HMM中的初始概率、转移概率、发射概率，进而完成求解。关于维特比算法和实现请参考《</span><a href="http://www.hankcs.com/nlp/general-java-implementation-of-the-viterbi-algorithm.html" data-original-title="" title="" style="text-indent: 32px; white-space: normal; color: rgb(66, 139, 202); font-family: &#39;Microsoft Yahei&#39;, &#39;Helvetica Neue&#39;, Helvetica, Arial, sans-serif; font-size: 14px; line-height: 25px; background-color: rgb(255, 255, 255);">通用维特比算法的Java实现</a><span style="text-indent: 32px;">》。</span></p>
+<h3 id="h3-6"><span style="text-indent: 32px;">测试<br></span></h3>
+<p style="text-indent: 2em;"><span style="text-indent: 32px;">以“我的<strong>爱</strong>就是<strong>爱</strong>自然语言处理”为例：</span></p>
+<pre class="brush:java;toolbar:false prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pln">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="typ">String</span><span class="pln">&nbsp;text&nbsp;</span><span class="pun">=</span><span class="pln">&nbsp;</span><span class="str">"我的爱就是爱自然语言处理"</span><span class="pun">;</span></li><li class="L1"><span class="pln">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="typ">Segment</span><span class="pln">&nbsp;segment&nbsp;</span><span class="pun">=</span><span class="pln">&nbsp;</span><span class="kwd">new</span><span class="pln">&nbsp;</span><span class="typ">Segment</span><span class="pun">();</span></li><li class="L2"><span class="pln">&nbsp;</span></li><li class="L3"><span class="pln">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="typ">System</span><span class="pun">.</span><span class="kwd">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"未标注："</span><span class="pln">&nbsp;</span><span class="pun">+</span><span class="pln">&nbsp;segment</span><span class="pun">.</span><span class="pln">seg</span><span class="pun">(</span><span class="pln">text</span><span class="pun">));</span></li><li class="L4"><span class="pln">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segment</span><span class="pun">.</span><span class="pln">enableSpeechTag</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">);</span></li><li class="L5"><span class="pln">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="typ">System</span><span class="pun">.</span><span class="kwd">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"标注后："</span><span class="pln">&nbsp;</span><span class="pun">+</span><span class="pln">&nbsp;segment</span><span class="pun">.</span><span class="pln">seg</span><span class="pun">(</span><span class="pln">text</span><span class="pun">));</span></li></ol></pre>
+<h3 id="h3-7">输出</h3>
+<blockquote>
+<p style="text-indent: 2em;">未标注：[我/rr, 的/ude1, <strong><span style="color: rgb(255, 0, 0);">爱/v</span></strong>, 就是/v, <span style="color: rgb(112, 48, 160);"><strong>爱/v</strong></span>, 自然语言/gm, 处理/vn]</p>
+<p style="text-indent: 2em;">标注后：[我/rr, 的/ude1, <strong><span style="color: rgb(0, 176, 80);">爱/vn</span></strong>, 就是/v, <span style="color: rgb(112, 48, 160);"><strong>爱/</strong><strong>v</strong></span>, 自然语言/gm, 处理/vn]</p>
+</blockquote>
+<p style="text-indent: 2em;">前后两个“爱”的词性并不相同，前者是名动词，后者是动词。</p>
+<p style="text-indent: 2em;">再比如</p>
+<blockquote>
+<p>未标注：[教授/nnt, 正在/d, 教授/nnt, 自然语言/gm, 处理/vn, 课程/n]</p>
+<p>标注后：[教授/nnt, 正在/d, 教授/v, 自然语言/gm, 处理/vn, 课程/n]</p>
+</blockquote>
+<p style="text-indent: 2em;">HanLP的词性标注初见成效。</p>
+<h2 id="h2-8">HanLP词性标注集</h2>
+<p style="text-indent: 2em;">HanLP使用的HMM词性标注模型训练自2014年人民日报切分语料，随后增加了少量98年人民日报中独有的词语。所以，HanLP词性标注集兼容《ICTPOS3.0汉语词性标记集》，并且兼容《现代汉语语料库加工规范——词语切分与词性标注》。</p>
+<table border="1" width="100%" cellpadding="3" cellspacing="0" summary="" interlaced="enabled">
+<tbody>
+<tr bgcolor="#CCCCFF" class="ue-table-interlace-color-single firstRow">
+<th align="left" colspan="2" style="background-color: rgb(219, 238, 243);"><span style="font-size: 20px; font-family: 宋体, SimSun;">HanLP词性标注集</span></th>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">a</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;形容词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ad</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;副形词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ag</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;形容词性语素</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">al</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;形容词性惯用语</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">an</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名形词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">b</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区别词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">begin</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="background-color: rgb(252, 252, 252);">仅用于始##始</span></td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">bg</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区别语素</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">bl</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区别词性惯用语</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">c</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;连词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">cc</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;并列连词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">d</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;副词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">dg</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;辄,俱,复之类的副词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">dl</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;连语</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">e</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;叹词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">end</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="background-color: rgb(247, 250, 255);">仅用于终##终</span></td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">f</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方位词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">g</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;学术词汇</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">gb</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生物相关词汇</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">gbc</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生物类别</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">gc</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;化学相关词汇</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">gg</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地理地质相关词汇</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">gi</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计算机相关词汇</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">gm</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数学相关词汇</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">gp</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;物理相关词汇</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">h</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前缀</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">i</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成语</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">j</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简称略语</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">k</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;后缀</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">l</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;习用语</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">m</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">mg</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数语素</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">Mg</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;甲乙丙丁之类的数词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">mq</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数量词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">n</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nb</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生物名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nba</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动物名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nbc</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动物纲目</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nbp</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;植物名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nf</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;食品，比如“薯片”</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ng</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名词性语素</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nh</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;医药疾病等健康相关名词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nhd</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;疾病</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nhm</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;药品</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ni</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机构相关（不是独立机构名）</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nic</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下属机构</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nis</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机构后缀</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nit</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;教育相关机构</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nl</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名词性惯用语</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nm</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;物品名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nmc</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;化学品名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nn</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;工作相关名词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nnd</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;职业</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nnt</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;职务职称</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nr</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nr1</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;复姓</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nr2</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;蒙古姓名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nrf</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;音译人名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nrj</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日语人名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ns</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nsf</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;音译地名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nt</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机构团体名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ntc</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;公司名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ntcb</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;银行</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ntcf</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;工厂</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ntch</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;酒店宾馆</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nth</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;医院</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nto</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;政府机构</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nts</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中小学</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ntu</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大学</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nx</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字母专名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">nz</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他专名</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">o</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拟声词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">p</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">pba</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介词“把”</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">pbei</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介词“被”</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">q</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">qg</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量词语素</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">qt</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时量词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">qv</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动量词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">r</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">rg</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代词性语素</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">Rg</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;古汉语代词性语素</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">rr</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人称代词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ry</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;疑问代词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">rys</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;处所疑问代词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ryt</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时间疑问代词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ryv</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;谓词性疑问代词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">rz</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指示代词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">rzs</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;处所指示代词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">rzt</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时间指示代词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">rzv</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;谓词性指示代词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">s</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;处所词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">t</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时间词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">tg</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时间词性语素</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">u</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;助词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ud</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;助词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ude1</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;的 底</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ude2</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ude3</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;得</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">udeng</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;等 等等 云云</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">udh</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;的话</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ug</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;过</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">uguo</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;过</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">uj</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;助词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ul</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;连词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ule</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;了 喽</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ulian</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;连 （“连小学生都会”）</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">uls</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;来讲 来说 而言 说来</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">usuo</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">uv</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;连词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">uyy</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一样 一般 似的 般</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">uz</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;着</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">uzhe</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;着</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">uzhi</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">v</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">vd</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;副动词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">vf</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;趋向动词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">vg</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动词性语素</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">vi</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不及物动词（内动词）</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">vl</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动词性惯用语</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">vn</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名动词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">vshi</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动词“是”</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">vx</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;形式动词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">vyou</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动词“有”</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">w</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标点符号</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">wb</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;百分号千分号，全角：％ ‰ &nbsp; 半角：%</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">wd</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;逗号，全角：， 半角：,</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">wf</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分号，全角：； 半角： ;</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">wh</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单位符号，全角：￥ ＄ ￡ &nbsp;° &nbsp;℃ &nbsp;半角：$</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">wj</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;句号，全角：。</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">wky</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;右括号，全角：） 〕 &nbsp;］ ｝ 》 &nbsp;】 〗 〉 半角： ) ] { &gt;</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">wkz</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;左括号，全角：（ 〔 &nbsp;［ &nbsp;｛ &nbsp;《 【 &nbsp;〖 〈 &nbsp; 半角：( [ { &lt;</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">wm</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;冒号，全角：： 半角： :</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">wn</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;顿号，全角：、</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">wp</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;破折号，全角：—— &nbsp; －－ &nbsp; ——－ &nbsp; 半角：— &nbsp;—-</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ws</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;省略号，全角：…… &nbsp;…</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">wt</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;叹号，全角：！</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">ww</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;问号，全角：？</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">wyy</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;右引号，全角：” ’ 』</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">wyz</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;左引号，全角：“ ‘ 『</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">x</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;字符串</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">xu</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网址URL</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">xx</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;非语素字</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">y</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;语气词(delete yg)</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">yg</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;语气语素</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-double">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">z</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态词</td>
+<td></td>
+</tr>
+<tr bgcolor="white" class="ue-table-interlace-color-single">
+<td><code><strong><a href="https://github.com/hankcs/HanLP" title="查看详情">zg</a></strong></code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态词</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p class="post-copyright"><a href="http://www.hankcs.com/license/" target="_blank"><img alt="知识共享许可协议" style="border-width: 0px;margin: 0 !important;" src="./词性标注-码农场_files/CC-BY-NC-SA-icon-88x31.png" width="88" height="31" border="0" vspace="0" title="知识共享许可协议" data-tag="bdshare"></a>&nbsp;<a href="http://www.hankcs.com/license/" target="_blank" textvalue="知识共享署名-非商业性使用-相同方式共享">知识共享署名-非商业性使用-相同方式共享</a>：<a href="http://www.hankcs.com/">码农场</a> » <a href="http://www.hankcs.com/nlp/part-of-speech-tagging.html">词性标注</a></p>		</article>
+								<div class="action-share bdsharebuttonbox bdshare-button-style0-24" data-bd-bind="1544754231108">
+			<span>分享到：</span><a class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a class="bds_bdhome" data-cmd="bdhome" title="分享到百度新首页"></a><a class="bds_tqf" data-cmd="tqf" title="分享到腾讯朋友"></a><a class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a class="bds_diandian" data-cmd="diandian" title="分享到点点网"></a><a class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a><a class="bds_ty" data-cmd="ty" title="分享到天涯社区"></a><a class="bds_kaixin001" data-cmd="kaixin001" title="分享到开心网"></a><a class="bds_taobao" data-cmd="taobao"></a><a class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a class="bds_twi" data-cmd="twi" title="分享到Twitter"></a><a class="bds_mail" data-cmd="mail" title="分享到邮件分享"></a><a class="bds_copy" data-cmd="copy" title="分享到复制网址"></a><a class="bds_more" data-cmd="more">更多</a> <span>(</span><a class="bds_count" data-cmd="count" title="累计分享4次">4</a><span>)</span>		</div>
+		<div class="article-tags">继续浏览有关 <a href="http://www.hankcs.com/nlp/segment/"><i class="fa fa-folder-open"></i> 中文分词</a><a href="http://www.hankcs.com/tag/hmm/" rel="tag">HMM</a><a href="http://www.hankcs.com/tag/%e4%b8%ad%e6%96%87%e5%88%86%e8%af%8d/" rel="tag">中文分词</a><a href="http://www.hankcs.com/tag/%e7%bb%b4%e7%89%b9%e6%af%94%e7%ae%97%e6%b3%95/" rel="tag">维特比算法</a> 的文章</div>		<div class="asb asb-post asb-post-02"><script async="" src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 文章页正文下 页首横幅 -->
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-1152644711996772" data-ad-slot="2657945648"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>		<nav class="article-nav">
+			<span class="article-nav-prev">上一篇 <a href="http://www.hankcs.com/nlp/name-transliteration-cascaded-hidden-markov-model-and-japanese-personal-names-recognition.html" rel="prev">层叠隐马模型下的音译人名和日本人名识别</a></span>
+			<span class="article-nav-next"><a href="http://www.hankcs.com/nlp/to-achieve-a-simple-generative-dependency-parsing.html" rel="next">依存句法分析器的简单实现</a> 下一篇</span>
+		</nav>
+				<div class="asb asb-post asb-post-03"><script async="" src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 匹配内容 -->
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1152644711996772" data-ad-slot="7343699642" data-ad-format="autorelaxed"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>		<div class="title" id="comments">
+	<h3>评论 <b>41</b></h3>
+</div>
+<div id="respond" class="no_webshot">
+		
+	<form action="http://www.hankcs.com/wp-comments-post.php" method="post" id="commentform">
+		<div class="comt">
+			<div class="comt-title">
+				<img alt="" data-src="http://0.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://0.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource" style="display: inline;">				<p><a id="cancel-comment-reply-link" href="javascript:;">取消</a></p>
+			</div>
+			<div class="comt-box">
+				<textarea placeholder="此处不受理任何开源项目问题，请在GitHub上发issue ，大家一起讨论，谢谢。" class="input-block-level comt-area" name="comment" id="comment" cols="100%" rows="3" tabindex="1" onkeydown="if(event.ctrlKey&amp;&amp;event.keyCode==13){document.getElementById(&#39;submit&#39;).click();return false};"></textarea>
+				<div class="comt-ctrl">
+					<div class="comt-tips"><input type="hidden" name="comment_post_ID" value="4348" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="bdfa16f46f"></p><label for="comment_mail_notify" class="checkbox inline hide" style="padding-top:0"><input type="checkbox" name="comment_mail_notify" id="comment_mail_notify" value="comment_mail_notify" checked="checked">有人回复时邮件通知我</label><p style="display: none;"></p><div class="comt-tip comt-loading" style="display: none;">评论提交中...</div><div class="comt-tip comt-error" style="display: none;">#</div></div>
+					<button type="submit" name="submit" id="submit" tabindex="5">提交评论</button>
+					<!-- <span data-type="comment-insert-smilie" class="muted comt-smilie"><i class="icon-thumbs-up icon12"></i> 表情</span> -->
+				</div>
+			</div>
+
+												<div class="comt-comterinfo" id="comment-author-info">
+						<ul>
+							<li class="form-inline"><label class="hide" for="author">昵称</label><input class="ipt" type="text" name="author" id="author" value="" tabindex="2" placeholder="昵称"><span class="text-muted">昵称 (必填)</span></li>
+							<li class="form-inline"><label class="hide" for="email">邮箱</label><input class="ipt" type="text" name="email" id="email" value="" tabindex="3" placeholder="邮箱"><span class="text-muted">邮箱 (必填)</span></li>
+							<li class="form-inline"><label class="hide" for="url">网址</label><input class="ipt" type="text" name="url" id="url" value="" tabindex="4" placeholder="网址"><span class="text-muted">网址</span></li>
+						</ul>
+					</div>
+									</div>
+
+	<input type="hidden" id="ak_js" name="ak_js" value="1544754229940"></form>
+	</div>
+<div id="postcomments">
+	<ol class="commentlist">
+		<li class="comment even thread-even depth-1" id="comment-4474"><span class="comt-f">#18</span><div class="comt-avatar"><img alt="" data-src="http://2.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://0.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource(1)" style="display: block;"></div><div class="comt-main" id="div-comment-4474"><p>能否只用词性标注呢，标注已经分好词的词性，只用hanlp词性标注。分词，词性能分开吗？</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://t.qq.com/dingding1056739724" rel="external nofollow" class="url" target="_blank">丁玲</a></span>2年前 (2017-01-10)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-4474&quot;, &quot;4474&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给丁玲">回复</a></div></div></li><!-- #comment-## -->
+<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-4471"><span class="comt-f">#17</span><div class="comt-avatar"><img alt="" data-src="http://0.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://0.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource" style="display: block;"></div><div class="comt-main" id="div-comment-4471"><p>我想搜看看有没有人做出能快速标出特地词性的网页呢，搜到这篇文章，留言标记。</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://weibo.com/loongtm" rel="external nofollow" class="url" target="_blank">踩着大象de蚂蚁</a></span>2年前 (2017-01-09)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-4471&quot;, &quot;4471&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给踩着大象de蚂蚁">回复</a></div></div></li><!-- #comment-## -->
+<li class="comment even thread-even depth-1" id="comment-4352"><span class="comt-f">#16</span><div class="comt-avatar"><img alt="" data-src="http://2.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://2.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource(1)" style="display: block;"></div><div class="comt-main" id="div-comment-4352"><p>你好，hanks，在hanLP中的词典，都是手工完成的吗？</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://weibo.com/2492799245" rel="external nofollow" class="url" target="_blank">薄荷红茶September</a></span>2年前 (2016-09-12)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-4352&quot;, &quot;4352&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给薄荷红茶September">回复</a></div></div></li><!-- #comment-## -->
+<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-4313"><span class="comt-f">#15</span><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource(2)" style="display: block;"></div><div class="comt-main" id="div-comment-4313"><p>等价的<br>
+源码中: P(to|from)＝λP(to)+(1-λ)P(to|from)<br>
+你说的: P(to|from)＝λP(from)+(1-λ)P(to|from)<br>
+博主在处理时，一头一尾都加了额外的标签"begin"和"end"<br>
+每条分词路径，从求和的角度来看，源码中无非是额外加上了P("begin")，你说的则是额外加上了P("end")<br>
+都加了一个常量，不影响各条分词路径总cost的比较</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://t.qq.com/qingzhutuc9586" rel="external nofollow" class="url" target="_blank">青竹吐翠</a></span>2年前 (2016-08-17)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-4313&quot;, &quot;4313&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给青竹吐翠">回复</a></div></div></li><!-- #comment-## -->
+<li class="comment even thread-even depth-1" id="comment-4278"><span class="comt-f">#14</span><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://2.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource(2)" style="display: block;"></div><div class="comt-main" id="div-comment-4278"><p>博主，发现时间词性好像不能解析啊。比如说“1月1日”在分词之后没有产生“1月1日/t” 而是“ 1/m, 月/q, 1/m, 日/ag”</p>
+<p>是不是有开关没有打开呢？</p>
+<div class="comt-meta"><span class="comt-author">Richard Chen</span>2年前 (2016-08-02)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-4278&quot;, &quot;4278&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给Richard Chen">回复</a></div></div></li><!-- #comment-## -->
+<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-4246"><span class="comt-f">#13</span><div class="comt-avatar"><img alt="" data-src="http://2.gravatar.com/avatar/b9063d3c8e93226a79342a74e7d002bf?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://2.gravatar.com/avatar/b9063d3c8e93226a79342a74e7d002bf?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/b9063d3c8e93226a79342a74e7d002bf" style="display: block;"></div><div class="comt-main" id="div-comment-4246"><p>你好，hankcs，仔细查看了你的代码发现，你的基于HMM的词性标注算法，也就是特化版的求解HMM模型的方法compute有问题，求出的解未必是全局最优解，但可以作为近似最优解。</p>
+<div class="comt-meta"><span class="comt-author">yifeng</span>2年前 (2016-07-24)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-4246&quot;, &quot;4246&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给yifeng">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-2" id="comment-4248"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-4248"><p>你好，感谢反馈。如果你认为的确有问题，欢迎提交pull request并注明具体为什么要这么改。</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>2年前 (2016-07-25)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-4248&quot;, &quot;4248&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div></li><!-- #comment-## -->
+<li class="comment odd alt depth-2" id="comment-4314"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://2.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource(2)" style="display: block;"></div><div class="comt-main" id="div-comment-4314"><p>对 我也发现了</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://t.qq.com/qingzhutuc9586" rel="external nofollow" class="url" target="_blank">青竹吐翠</a></span>2年前 (2016-08-17)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-4314&quot;, &quot;4314&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给青竹吐翠">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-3" id="comment-4317"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-4317"><p>你们说的是preItem.confirmNature(pre);的时机过早对吧。按标准流程必须构造L*N的二维前驱数组，L是句子长度，N是词性个数，最后按前驱数组回溯最短路径。事实上，我认为这个代价是不必要的，汉语词性的影响力应该是局部的，不会传播那么远，所以我简单地选取了2为决策长度。</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>2年前 (2016-08-18)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-4317&quot;, &quot;4317&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div></li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+<li class="comment odd alt thread-even depth-1" id="comment-3771"><span class="comt-f">#12</span><div class="comt-avatar"><img alt="" data-src="http://2.gravatar.com/avatar/8d80df12e6d14f0c42cf5f8c6bfc3a5f?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://2.gravatar.com/avatar/8d80df12e6d14f0c42cf5f8c6bfc3a5f?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/8d80df12e6d14f0c42cf5f8c6bfc3a5f" style="display: block;"></div><div class="comt-main" id="div-comment-3771"><p>“你喜欢吃苹果吗？”—这句话把“吃苹果”当成一个词了，怎么会这样？</p>
+<div class="comt-meta"><span class="comt-author">pai</span>3年前 (2016-03-11)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-3771&quot;, &quot;3771&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给pai">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-2" id="comment-3773"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-3773"><p><a href="https://github.com/hankcs/HanLP/issues/148" rel="nofollow">https://github.com/hankcs/HanLP/issues/148</a></p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>3年前 (2016-03-11)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-3773&quot;, &quot;3773&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div></li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-3770"><span class="comt-f">#11</span><div class="comt-avatar"><img alt="" data-src="http://0.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource" style="display: block;"></div><div class="comt-main" id="div-comment-3770"><p>不错啊，谢谢分享</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.baidu.com/p/%E5%BF%83%E7%81%AF%E4%B8%80%E8%B1%86" rel="external nofollow" class="url" target="_blank">心灯一豆</a></span>3年前 (2016-03-09)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-3770&quot;, &quot;3770&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给心灯一豆">回复</a></div></div></li><!-- #comment-## -->
+<li class="comment even thread-even depth-1" id="comment-3659"><span class="comt-f">#10</span><div class="comt-avatar"><img alt="" data-src="http://0.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://0.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource" style="display: block;"></div><div class="comt-main" id="div-comment-3659"><p>为什么我的评论老看不到？？？</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://weibo.com/1822617425" rel="external nofollow" class="url" target="_blank">寂寥的梧桐</a></span>3年前 (2016-01-12)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-3659&quot;, &quot;3659&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给寂寥的梧桐">回复</a></div></div></li><!-- #comment-## -->
+<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-3633"><span class="comt-f">#9</span><div class="comt-avatar"><img alt="" data-src="http://0.gravatar.com/avatar/024e6b68baa561736327d620f609b25c?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://0.gravatar.com/avatar/024e6b68baa561736327d620f609b25c?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/024e6b68baa561736327d620f609b25c" style="display: block;"></div><div class="comt-main" id="div-comment-3633"><p>“今天”和“明天”的词性为何不同，请问该怎么改成一致</p>
+<div class="comt-meta"><span class="comt-author">pai</span>3年前 (2016-01-05)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-3633&quot;, &quot;3633&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给pai">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-2" id="comment-3669"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-3669"><p><a href="https://github.com/hankcs/HanLP/issues/118#issuecomment-171179490" rel="nofollow">https://github.com/hankcs/HanLP/issues/118#issuecomment-171179490</a></p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>3年前 (2016-01-14)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-3669&quot;, &quot;3669&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div></li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+<li class="comment odd alt thread-even depth-1" id="comment-3534"><span class="comt-f">#8</span><div class="comt-avatar"><img alt="" data-src="http://2.gravatar.com/avatar/84654024840d58884dda2ab1864fcbc2?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://2.gravatar.com/avatar/84654024840d58884dda2ab1864fcbc2?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/84654024840d58884dda2ab1864fcbc2" style="display: block;"></div><div class="comt-main" id="div-comment-3534"><p>想问一下有不有实词虚词这样的粗粒度的分类</p>
+<div class="comt-meta"><span class="comt-author">likenlp</span>3年前 (2015-12-02)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-3534&quot;, &quot;3534&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给likenlp">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-2" id="comment-3535"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-3535"><p>Ctrl+F</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>3年前 (2015-12-02)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-3535&quot;, &quot;3535&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div></li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-3026"><span class="comt-f">#7</span><div class="comt-avatar"><img alt="" data-src="http://0.gravatar.com/avatar/ccc439c91cf255e3b95917701a21ecc0?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://0.gravatar.com/avatar/ccc439c91cf255e3b95917701a21ecc0?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/ccc439c91cf255e3b95917701a21ecc0" style="display: block;"></div><div class="comt-main" id="div-comment-3026"><p>博主您好，想问一下HanLP的词性标注用的是哪个版本的标注格式？谢谢~</p>
+<div class="comt-meta"><span class="comt-author">流于残雪</span>3年前 (2015-08-03)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-3026&quot;, &quot;3026&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给流于残雪">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-2" id="comment-3028"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-3028"><p>词语标注集兼容《ICTPOS3.0汉语词性标记集》<br>
+词语标注集兼容《现代汉语语料库加工规范——词语切分与词性标注》</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>3年前 (2015-08-03)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-3028&quot;, &quot;3028&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div></li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+<li class="comment odd alt thread-even depth-1" id="comment-2892"><span class="comt-f">#6</span><div class="comt-avatar"><img alt="" data-src="http://2.gravatar.com/avatar/bdf35571ea124df64c9f6b6a608fa6c6?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://2.gravatar.com/avatar/bdf35571ea124df64c9f6b6a608fa6c6?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/bdf35571ea124df64c9f6b6a608fa6c6" style="display: block;"></div><div class="comt-main" id="div-comment-2892"><p>hankcs你好，首先，感性你提供的源码。在看你的隐马词性标注这块，对于转移概率的计算，<br>
+double frequency = matrix[from][to] + 1e-8;<br>
+transititon_probability[from][to] = -Math.log(frequency / totalFrequency);  个人认为，这句代码计算的不是转移概率，而是p(ti,ti-1).转移概率应该是：p(ti|ti-1) = p(ti,ti-1)| p(ti-1). 但是我测试了一下，实际上，按transititon_probability[from][to] = -Math.log(frequency / totalFrequency)计算的转移概率，正确率要比我改过的要好。但是，找不到比较好的解释。拜问？</p>
+<div class="comt-meta"><span class="comt-author">inteldt</span>4年前 (2015-06-17)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2892&quot;, &quot;2892&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给inteldt">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-2" id="comment-2926"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-2926"><p>你好，这在哪个类里面？我需要看一下上下文</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>4年前 (2015-06-28)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2926&quot;, &quot;2926&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div></li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-2881"><span class="comt-f">#5</span><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://0.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource(2)" style="display: block;"></div><div class="comt-main" id="div-comment-2881"><p>segment.enableSpeechTag(true); 这个找不到相应的方法，不知道这是什么原因</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://t.qq.com/liuruoxian111" rel="external nofollow" class="url" target="_blank">柳若先</a></span>4年前 (2015-06-17)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2881&quot;, &quot;2881&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给柳若先">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-2" id="comment-2927"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-2927"><p>segment.enablePartOfSpeechTagging(true);</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>4年前 (2015-06-28)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2927&quot;, &quot;2927&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div></li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+<li class="comment odd alt thread-even depth-1" id="comment-2879"><span class="comt-f">#4</span><div class="comt-avatar"><img alt="" data-src="http://2.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource(1)" style="display: block;"></div><div class="comt-main" id="div-comment-2879"><p>我跟踪了hanlp代码，没看到可以自定义词性的地方。也许是我没看完整，求博主指导</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://t.qq.com/lpfhome" rel="external nofollow" class="url" target="_blank">李元</a></span>4年前 (2015-06-16)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2879&quot;, &quot;2879&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给李元">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-2" id="comment-2928"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-2928"><p>词性是enum类型，不是string，所以你需要往Nature enum类里面加自定义词性</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>4年前 (2015-06-28)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2928&quot;, &quot;2928&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div><ul class="children">
+<li class="comment odd alt depth-3" id="comment-3036"><div class="comt-avatar"><img alt="" data-src="http://2.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://0.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource(1)" style="display: block;"></div><div class="comt-main" id="div-comment-3036"><p>我在Nature enum里添加了自定义词性，在词典里添加了自定义词条，但是没有结果</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://t.qq.com/lpfhome" rel="external nofollow" class="url" target="_blank">李元</a></span>3年前 (2015-08-05)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-3036&quot;, &quot;3036&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给李元">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-4" id="comment-3037"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-3037"><p>删缓存<br>
+核心词典优先级更高，确保不要冲突</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>3年前 (2015-08-05)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-3037&quot;, &quot;3037&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div></li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-2650"><span class="comt-f">#3</span><div class="comt-avatar"><img alt="" data-src="http://0.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://2.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource" style="display: block;"></div><div class="comt-main" id="div-comment-2650"><p>博主你好，使用CRF进行分词后启用词性标注后发现有些词的词性为null，这个是为什么呢？[梁/n, 咏琪/null, 是/vshi, 谁/ry, ？/w]<br>
+识别到新词：咏琪<br>
+[梁咏琪/nr, 是/vshi, 谁/ry, ？/w]，解决这个问题是否需要启用命名实体识别或者在核心词典中添加相应的词和词性标注？</p>
+<div class="comt-meta"><span class="comt-author">myeclipse</span>4年前 (2015-04-15)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2650&quot;, &quot;2650&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给myeclipse">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-2" id="comment-2651"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-2651"><p>null表示这个词不在词典中，目前CRF分词器的效果还有待提高，也不支持命名实体识别，请尽量使用效果稳定的Viterbi分词器，或者关注未来的更新。</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>4年前 (2015-04-15)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2651&quot;, &quot;2651&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div></li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+<li class="comment odd alt thread-even depth-1" id="comment-2538"><span class="comt-f">#2</span><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://0.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource(2)" style="display: block;"></div><div class="comt-main" id="div-comment-2538"><p>想请教您一下，如果是海量的文本统计词频，是怎么统计的,是分批统计结果吗？如果有重复的句子需要去重吗？</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://weibo.com/5055171788" rel="external nofollow" class="url" target="_blank">用户e8cn4y0afn</a></span>4年前 (2015-03-19)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2538&quot;, &quot;2538&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给用户e8cn4y0afn">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-2" id="comment-2569"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-2569"><p>用trie树就行了，再海量的文本也扛得住。不用去重</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>4年前 (2015-03-27)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2569&quot;, &quot;2569&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div></li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-2412"><span class="comt-f">#1</span><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource(2)" style="display: block;"></div><div class="comt-main" id="div-comment-2412"><p>请问下 有无完整的从词典到初始矩阵，状态矩阵，到转移矩阵的例子，<br>
+从大文本讲 如果文本里面有|V|个单词 一般是好几十万，那么这个矩阵将会非常大，会不会维数灾难。</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://weibo.com/2623110964" rel="external nofollow" class="url" target="_blank">阿黄想太多</a></span>4年前 (2015-02-05)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2412&quot;, &quot;2412&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给阿黄想太多">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-2" id="comment-2417"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-2417"><p>等HanLP正式开源后，你就可以看到从训练到标注的完整代码。<br>
+不会，转移矩阵的大小是固定的(约100*100)，虽然词性总个数有大约100个，设为p，但每个词i的词性只有两三个（设为p_i)，假设识别n个词的词性，只需开一个二维double  <img src="./词性标注-码农场_files/newn_org.gif" alt="[n]" title="[n]" class="ds-smiley"> [p_i]的数组就可以跑Viterbi算法了。</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>4年前 (2015-02-05)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2417&quot;, &quot;2417&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div><ul class="children">
+<li class="comment odd alt depth-3" id="comment-2418"><div class="comt-avatar"><img alt="" data-src="http://2.gravatar.com/avatar/?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://2.gravatar.com/avatar/?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo avatar-default" height="50" width="50" src="./词性标注-码农场_files/saved_resource(1)" style="display: block;"></div><div class="comt-main" id="div-comment-2418"><p>我详细看了下 你写的呢个威特比例子   关键是从pos-》word那个矩阵超级大，在词性预测中 应该按照你说的每个词i的词性只有两三个（设为p_i) 不需要所有词性到word的映射，我想在这里可以做逻辑处理 减少计算量，不知道是不是。<br>
+希望你的hanlp早日出 过年有时间看下。</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://weibo.com/2623110964" rel="external nofollow" class="url" target="_blank">阿黄想太多</a></span>4年前 (2015-02-05)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2418&quot;, &quot;2418&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给阿黄想太多">回复</a></div></div><ul class="children">
+<li class="comment byuser comment-author-hankcs bypostauthor even depth-4" id="comment-2419"><div class="comt-avatar"><img alt="" data-src="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=50&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g" srcset="http://1.gravatar.com/avatar/de961732ee897fa88c707396fb1d55a4?s=100&amp;d=http%3A%2F%2Fwww.hankcs.com%2Fwp-content%2Fthemes%2Fdux%2Fimg%2Favatar-default.png&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50" src="./词性标注-码农场_files/de961732ee897fa88c707396fb1d55a4.png" style="display: block;"></div><div class="comt-main" id="div-comment-2419"><p>你说的发射概率矩阵对吧，也就是我写的那个double nprob = V[t – 1][y0] * trans_p[y0] <img src="./词性标注-码农场_files/newy_org.gif" alt="[y]" title="[y]" class="ds-smiley">  * emit_p <img src="./词性标注-码农场_files/newy_org.gif" alt="[y]" title="[y]" class="ds-smiley"> [obs <img src="./词性标注-码农场_files/newt_org.gif" alt="[t]" title="[t]" class="ds-smiley"> ];里面的emit_p。<br>
+这个问题我早就注意到了，HanLP的词性标注的Viterbi方法是特别优化过的，发射概率是动态计算的：<br>
+cost <img src="./词性标注-码农场_files/weiboi_org.gif" alt="[i]" title="[i]" class="ds-smiley">  <img src="./词性标注-码农场_files/newj_org.gif" alt="[j]" title="[j]" class="ds-smiley">  = total + transformMatrixDictionary.transititon_probability[pre.ordinal()][cur.ordinal()] – Math.log((item.attribute.frequency <img src="./词性标注-码农场_files/newj_org.gif" alt="[j]" title="[j]" class="ds-smiley">  + 1e-8) / transformMatrixDictionary.getTotalFrequency(cur));<br>
+关于发布时间，应该在年内。</p>
+<div class="comt-meta"><span class="comt-author"><a href="http://www.hankcs.com/" rel="external nofollow" class="url" target="_blank">hankcs</a></span>4年前 (2015-02-05)<a rel="nofollow" class="comment-reply-link" href="javascript:;" onclick="return addComment.moveForm( &quot;div-comment-2419&quot;, &quot;2419&quot;, &quot;respond&quot;, &quot;4348&quot; )" aria-label="回复给hankcs">回复</a></div></div></li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	</ol>
+	<div class="pagenav">
+			</div>
+</div>
+	</div>
+	</div>
+	<aside class="sidebar">
+<div class="widget widget_categories affix-top" style="top: 0px;"><h3>栏目分类</h3><form action="http://www.hankcs.com/" method="get"><label class="screen-reader-text" for="cat">栏目分类</label><select name="cat" id="cat" class="postform">
+	<option value="-1">选择分类目录</option>
+	<option class="level-0" value="18">ACG&nbsp;&nbsp;(7)</option>
+	<option class="level-1" value="117">&nbsp;&nbsp;&nbsp;游戏&nbsp;&nbsp;(5)</option>
+	<option class="level-0" value="7">Web开发&nbsp;&nbsp;(80)</option>
+	<option class="level-1" value="64">&nbsp;&nbsp;&nbsp;BAE&nbsp;&nbsp;(13)</option>
+	<option class="level-1" value="11">&nbsp;&nbsp;&nbsp;Linux相关&nbsp;&nbsp;(9)</option>
+	<option class="level-1" value="54">&nbsp;&nbsp;&nbsp;Mac OS&nbsp;&nbsp;(1)</option>
+	<option class="level-1" value="27">&nbsp;&nbsp;&nbsp;WordPress&nbsp;&nbsp;(8)</option>
+	<option class="level-1" value="65">&nbsp;&nbsp;&nbsp;Yii&nbsp;&nbsp;(17)</option>
+	<option class="level-1" value="2">&nbsp;&nbsp;&nbsp;主机域名&nbsp;&nbsp;(26)</option>
+	<option class="level-1" value="66">&nbsp;&nbsp;&nbsp;数据库&nbsp;&nbsp;(4)</option>
+	<option class="level-0" value="140">信息安全&nbsp;&nbsp;(3)</option>
+	<option class="level-0" value="1">其他类别&nbsp;&nbsp;(184)</option>
+	<option class="level-1" value="78">&nbsp;&nbsp;&nbsp;心情&nbsp;&nbsp;(1)</option>
+	<option class="level-1" value="15">&nbsp;&nbsp;&nbsp;旧的博文&nbsp;&nbsp;(170)</option>
+	<option class="level-0" value="87">操作系统&nbsp;&nbsp;(3)</option>
+	<option class="level-1" value="88">&nbsp;&nbsp;&nbsp;Windows&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="81">数学基礎&nbsp;&nbsp;(3)</option>
+	<option class="level-0" value="4">日语教程&nbsp;&nbsp;(120)</option>
+	<option class="level-1" value="96">&nbsp;&nbsp;&nbsp;口译&nbsp;&nbsp;(1)</option>
+	<option class="level-1" value="59">&nbsp;&nbsp;&nbsp;新编日语商务贸易会话&nbsp;&nbsp;(14)</option>
+	<option class="level-1" value="19">&nbsp;&nbsp;&nbsp;新编日语阅读文选&nbsp;&nbsp;(34)</option>
+	<option class="level-2" value="44">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一册&nbsp;&nbsp;(20)</option>
+	<option class="level-2" value="61">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第三册&nbsp;&nbsp;(2)</option>
+	<option class="level-2" value="20">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二册&nbsp;&nbsp;(10)</option>
+	<option class="level-1" value="46">&nbsp;&nbsp;&nbsp;日语入门&nbsp;&nbsp;(2)</option>
+	<option class="level-1" value="62">&nbsp;&nbsp;&nbsp;日语听力&nbsp;&nbsp;(2)</option>
+	<option class="level-1" value="5">&nbsp;&nbsp;&nbsp;日语综合教程&nbsp;&nbsp;(64)</option>
+	<option class="level-2" value="120">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第七册&nbsp;&nbsp;(14)</option>
+	<option class="level-2" value="50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第三册&nbsp;&nbsp;(7)</option>
+	<option class="level-2" value="73">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第五册&nbsp;&nbsp;(12)</option>
+	<option class="level-2" value="98">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第六册&nbsp;&nbsp;(18)</option>
+	<option class="level-2" value="6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第四册&nbsp;&nbsp;(12)</option>
+	<option class="level-1" value="86">&nbsp;&nbsp;&nbsp;月の珊瑚&nbsp;&nbsp;(3)</option>
+	<option class="level-0" value="131">机器学习&nbsp;&nbsp;(58)</option>
+	<option class="level-0" value="16">经济人文&nbsp;&nbsp;(19)</option>
+	<option class="level-1" value="17">&nbsp;&nbsp;&nbsp;国际贸易理论与政策&nbsp;&nbsp;(9)</option>
+	<option class="level-1" value="30">&nbsp;&nbsp;&nbsp;当代世界经济与政治&nbsp;&nbsp;(3)</option>
+	<option class="level-0" value="9">编程开发&nbsp;&nbsp;(557)</option>
+	<option class="level-1" value="8">&nbsp;&nbsp;&nbsp;Android&nbsp;&nbsp;(30)</option>
+	<option class="level-1" value="13">&nbsp;&nbsp;&nbsp;C++&nbsp;&nbsp;(237)</option>
+	<option class="level-1" value="25">&nbsp;&nbsp;&nbsp;Drupal&nbsp;&nbsp;(23)</option>
+	<option class="level-1" value="10">&nbsp;&nbsp;&nbsp;Java&nbsp;&nbsp;(69)</option>
+	<option class="level-1" value="123">&nbsp;&nbsp;&nbsp;Javascript&nbsp;&nbsp;(1)</option>
+	<option class="level-1" value="24">&nbsp;&nbsp;&nbsp;PHP&nbsp;&nbsp;(57)</option>
+	<option class="level-1" value="94">&nbsp;&nbsp;&nbsp;Python&nbsp;&nbsp;(8)</option>
+	<option class="level-1" value="14">&nbsp;&nbsp;&nbsp;汇编逆向&nbsp;&nbsp;(12)</option>
+	<option class="level-1" value="70">&nbsp;&nbsp;&nbsp;算法&nbsp;&nbsp;(236)</option>
+	<option class="level-1" value="121">&nbsp;&nbsp;&nbsp;网络&nbsp;&nbsp;(6)</option>
+	<option class="level-0" value="104">自然语言处理&nbsp;&nbsp;(96)</option>
+	<option class="level-1" value="109">&nbsp;&nbsp;&nbsp;中文分词&nbsp;&nbsp;(12)</option>
+	<option class="level-1" value="128">&nbsp;&nbsp;&nbsp;句法分析&nbsp;&nbsp;(8)</option>
+	<option class="level-1" value="127">&nbsp;&nbsp;&nbsp;命名实体识别&nbsp;&nbsp;(7)</option>
+	<option class="level-1" value="158">&nbsp;&nbsp;&nbsp;语义分析&nbsp;&nbsp;(1)</option>
+	<option class="level-1" value="105">&nbsp;&nbsp;&nbsp;语料库&nbsp;&nbsp;(4)</option>
+	<option class="level-0" value="12">软件发布&nbsp;&nbsp;(9)</option>
+</select>
+</form>
+<script type="text/javascript">
+/* <![CDATA[ */
+(function() {
+	var dropdown = document.getElementById( "cat" );
+	function onCatChange() {
+		if ( dropdown.options[ dropdown.selectedIndex ].value > 0 ) {
+			dropdown.parentNode.submit();
+		}
+	}
+	dropdown.onchange = onCatChange;
+})();
+/* ]]> */
+</script>
+
+</div><div class="widget widget_archive" style="top: 0px;"><h3>文章归档</h3>		<label class="screen-reader-text" for="archives-dropdown-5">文章归档</label>
+		<select id="archives-dropdown-5" name="archive-dropdown" onchange="document.location.href=this.options[this.selectedIndex].value;">
+			
+			<option value="">选择月份</option>
+				<option value="http://www.hankcs.com/2018/12/"> 2018年十二月 &nbsp;(1)</option>
+	<option value="http://www.hankcs.com/2018/02/"> 2018年二月 &nbsp;(2)</option>
+	<option value="http://www.hankcs.com/2017/12/"> 2017年十二月 &nbsp;(2)</option>
+	<option value="http://www.hankcs.com/2017/11/"> 2017年十一月 &nbsp;(2)</option>
+	<option value="http://www.hankcs.com/2017/08/"> 2017年八月 &nbsp;(1)</option>
+	<option value="http://www.hankcs.com/2017/07/"> 2017年七月 &nbsp;(14)</option>
+	<option value="http://www.hankcs.com/2017/06/"> 2017年六月 &nbsp;(28)</option>
+	<option value="http://www.hankcs.com/2017/05/"> 2017年五月 &nbsp;(8)</option>
+	<option value="http://www.hankcs.com/2017/03/"> 2017年三月 &nbsp;(12)</option>
+	<option value="http://www.hankcs.com/2017/02/"> 2017年二月 &nbsp;(13)</option>
+	<option value="http://www.hankcs.com/2017/01/"> 2017年一月 &nbsp;(22)</option>
+	<option value="http://www.hankcs.com/2016/12/"> 2016年十二月 &nbsp;(2)</option>
+	<option value="http://www.hankcs.com/2016/11/"> 2016年十一月 &nbsp;(15)</option>
+	<option value="http://www.hankcs.com/2016/10/"> 2016年十月 &nbsp;(3)</option>
+	<option value="http://www.hankcs.com/2016/09/"> 2016年九月 &nbsp;(3)</option>
+	<option value="http://www.hankcs.com/2016/08/"> 2016年八月 &nbsp;(7)</option>
+	<option value="http://www.hankcs.com/2016/07/"> 2016年七月 &nbsp;(1)</option>
+	<option value="http://www.hankcs.com/2016/06/"> 2016年六月 &nbsp;(1)</option>
+	<option value="http://www.hankcs.com/2016/05/"> 2016年五月 &nbsp;(3)</option>
+	<option value="http://www.hankcs.com/2016/04/"> 2016年四月 &nbsp;(2)</option>
+	<option value="http://www.hankcs.com/2016/03/"> 2016年三月 &nbsp;(3)</option>
+	<option value="http://www.hankcs.com/2016/02/"> 2016年二月 &nbsp;(3)</option>
+	<option value="http://www.hankcs.com/2015/12/"> 2015年十二月 &nbsp;(3)</option>
+	<option value="http://www.hankcs.com/2015/11/"> 2015年十一月 &nbsp;(6)</option>
+	<option value="http://www.hankcs.com/2015/10/"> 2015年十月 &nbsp;(4)</option>
+	<option value="http://www.hankcs.com/2015/09/"> 2015年九月 &nbsp;(4)</option>
+	<option value="http://www.hankcs.com/2015/08/"> 2015年八月 &nbsp;(2)</option>
+	<option value="http://www.hankcs.com/2015/07/"> 2015年七月 &nbsp;(6)</option>
+	<option value="http://www.hankcs.com/2015/05/"> 2015年五月 &nbsp;(3)</option>
+	<option value="http://www.hankcs.com/2015/04/"> 2015年四月 &nbsp;(5)</option>
+	<option value="http://www.hankcs.com/2015/03/"> 2015年三月 &nbsp;(3)</option>
+	<option value="http://www.hankcs.com/2015/02/"> 2015年二月 &nbsp;(22)</option>
+	<option value="http://www.hankcs.com/2015/01/"> 2015年一月 &nbsp;(14)</option>
+	<option value="http://www.hankcs.com/2014/12/"> 2014年十二月 &nbsp;(10)</option>
+	<option value="http://www.hankcs.com/2014/11/"> 2014年十一月 &nbsp;(21)</option>
+	<option value="http://www.hankcs.com/2014/10/"> 2014年十月 &nbsp;(14)</option>
+	<option value="http://www.hankcs.com/2014/09/"> 2014年九月 &nbsp;(16)</option>
+	<option value="http://www.hankcs.com/2014/08/"> 2014年八月 &nbsp;(11)</option>
+	<option value="http://www.hankcs.com/2014/07/"> 2014年七月 &nbsp;(6)</option>
+	<option value="http://www.hankcs.com/2014/06/"> 2014年六月 &nbsp;(13)</option>
+	<option value="http://www.hankcs.com/2014/05/"> 2014年五月 &nbsp;(28)</option>
+	<option value="http://www.hankcs.com/2014/04/"> 2014年四月 &nbsp;(41)</option>
+	<option value="http://www.hankcs.com/2014/03/"> 2014年三月 &nbsp;(26)</option>
+	<option value="http://www.hankcs.com/2014/02/"> 2014年二月 &nbsp;(52)</option>
+	<option value="http://www.hankcs.com/2014/01/"> 2014年一月 &nbsp;(28)</option>
+	<option value="http://www.hankcs.com/2013/12/"> 2013年十二月 &nbsp;(29)</option>
+	<option value="http://www.hankcs.com/2013/11/"> 2013年十一月 &nbsp;(21)</option>
+	<option value="http://www.hankcs.com/2013/10/"> 2013年十月 &nbsp;(11)</option>
+	<option value="http://www.hankcs.com/2013/09/"> 2013年九月 &nbsp;(19)</option>
+	<option value="http://www.hankcs.com/2013/08/"> 2013年八月 &nbsp;(22)</option>
+	<option value="http://www.hankcs.com/2013/07/"> 2013年七月 &nbsp;(36)</option>
+	<option value="http://www.hankcs.com/2013/06/"> 2013年六月 &nbsp;(24)</option>
+	<option value="http://www.hankcs.com/2013/05/"> 2013年五月 &nbsp;(36)</option>
+	<option value="http://www.hankcs.com/2013/04/"> 2013年四月 &nbsp;(29)</option>
+	<option value="http://www.hankcs.com/2013/03/"> 2013年三月 &nbsp;(46)</option>
+	<option value="http://www.hankcs.com/2013/02/"> 2013年二月 &nbsp;(5)</option>
+	<option value="http://www.hankcs.com/2012/05/"> 2012年五月 &nbsp;(2)</option>
+	<option value="http://www.hankcs.com/2012/04/"> 2012年四月 &nbsp;(6)</option>
+	<option value="http://www.hankcs.com/2010/12/"> 2010年十二月 &nbsp;(5)</option>
+	<option value="http://www.hankcs.com/2010/11/"> 2010年十一月 &nbsp;(10)</option>
+	<option value="http://www.hankcs.com/2010/10/"> 2010年十月 &nbsp;(13)</option>
+	<option value="http://www.hankcs.com/2010/09/"> 2010年九月 &nbsp;(6)</option>
+	<option value="http://www.hankcs.com/2010/08/"> 2010年八月 &nbsp;(5)</option>
+	<option value="http://www.hankcs.com/2010/07/"> 2010年七月 &nbsp;(3)</option>
+	<option value="http://www.hankcs.com/2010/06/"> 2010年六月 &nbsp;(12)</option>
+	<option value="http://www.hankcs.com/2010/05/"> 2010年五月 &nbsp;(14)</option>
+	<option value="http://www.hankcs.com/2010/04/"> 2010年四月 &nbsp;(8)</option>
+	<option value="http://www.hankcs.com/2010/03/"> 2010年三月 &nbsp;(16)</option>
+	<option value="http://www.hankcs.com/2010/01/"> 2010年一月 &nbsp;(16)</option>
+	<option value="http://www.hankcs.com/2009/12/"> 2009年十二月 &nbsp;(33)</option>
+	<option value="http://www.hankcs.com/2009/11/"> 2009年十一月 &nbsp;(26)</option>
+	<option value="http://www.hankcs.com/2009/09/"> 2009年九月 &nbsp;(2)</option>
+
+		</select>
+		</div><div class="widget widget_ui_posts"><h3>热门文章</h3><ul>		<li><a target="_blank" href="http://www.hankcs.com/nlp/part-of-speech-tagging.html"><span class="thumbnail"><img src="./词性标注-码农场_files/6cbb8645jw1emgd7fyb3ij20k00f074u(1).jpg" class="thumb" alt="词性标注" title="词性标注"></span><span class="text">词性标注</span><span class="muted">2014-11-19</span><span class="muted">评论(41)</span></a></li>
+		<li><a target="_blank" href="http://www.hankcs.com/nlp/segment/full-text-retrieval-solr-integrated-hanlp-chinese-word-segmentation.html"><span class="thumbnail"><img src="./词性标注-码农场_files/6cbb8645jw1evbtqw5q1tj20sg0lc41n.jpg" class="thumb" alt="全文检索Solr集成HanLP中文分词" title="全文检索Solr集成HanLP中文分词"></span><span class="text">全文检索Solr集成HanLP中文分词</span><span class="muted">2015-08-23</span><span class="muted">评论(24)</span></a></li>
+		<li><a target="_blank" href="http://www.hankcs.com/nlp/segment/crf-segmentation-of-the-pure-java-implementation.html"><span class="thumbnail"><img src="./词性标注-码农场_files/6cbb8645jw1en4lqd5qq3j21510p1jvn.jpg" class="thumb" alt="CRF分词的纯Java实现" title="CRF分词的纯Java实现"></span><span class="text">CRF分词的纯Java实现</span><span class="muted">2014-12-10</span><span class="muted">评论(19)</span></a></li>
+		<li><a target="_blank" href="http://www.hankcs.com/nlp/segment/depth-learning-chinese-word-segmentation-survey.html"><span class="thumbnail"><img src="./词性标注-码农场_files/006Fmjmcly1fiesd4puiuj30vb0jg783.jpg" class="thumb" alt="深度学习中文分词调研" title="深度学习中文分词调研"></span><span class="text">深度学习中文分词调研</span><span class="muted">2017-08-10</span><span class="muted">评论(18)</span></a></li>
+		<li><a target="_blank" href="http://www.hankcs.com/nlp/segment/the-word-graph-is-generated.html"><span class="thumbnail"><img src="./词性标注-码农场_files/6cbb8645gw1eghe5t76jrg20cs06dmwz.gif" class="thumb" alt="词图的生成" title="词图的生成"></span><span class="text">词图的生成</span><span class="muted">2014-05-17</span><span class="muted">评论(18)</span></a></li>
+		<li><a target="_blank" href="http://www.hankcs.com/nlp/segment/n-shortest-path-to-the-java-implementation-and-application-segmentation.html"><span class="thumbnail"><img src="./词性标注-码农场_files/6cbb8645gw1egmc1j4nt9g20an02zwea.gif" class="thumb" alt="N最短路径的Java实现与分词应用" title="N最短路径的Java实现与分词应用"></span><span class="text">N最短路径的Java实现与分词应用</span><span class="muted">2014-05-22</span><span class="muted">评论(17)</span></a></li>
+</ul></div><div class="widget widget_ui_posts" style="top: 0px;"><h3>最新文章</h3><ul>		<li><a target="_blank" href="http://www.hankcs.com/nlp/segment/multi-criteria-cws.html"><span class="thumbnail"><img src="./词性标注-码农场_files/006Fmjmcly1fmcpi3cx91j30k00b0q4f.jpg" class="thumb" alt="简单有效的多标准中文分词" title="简单有效的多标准中文分词"></span><span class="text">简单有效的多标准中文分词</span><span class="muted">2017-12-11</span><span class="muted">评论(13)</span></a></li>
+		<li><a target="_blank" href="http://www.hankcs.com/nlp/segment/depth-learning-chinese-word-segmentation-survey.html"><span class="thumbnail"><img src="./词性标注-码农场_files/006Fmjmcly1fiesd4puiuj30vb0jg783.jpg" class="thumb" alt="深度学习中文分词调研" title="深度学习中文分词调研"></span><span class="text">深度学习中文分词调研</span><span class="muted">2017-08-10</span><span class="muted">评论(18)</span></a></li>
+		<li><a target="_blank" href="http://www.hankcs.com/nlp/segment/implementation-of-word-segmentation-device-java-based-on-structured-average-perceptron.html"><span class="thumbnail"><img src="./词性标注-码农场_files/6cbb8645gw1f7qflspfubj21kw12odtn.jpg" class="thumb" alt="基于结构化平均感知机的分词器Java实现" title="基于结构化平均感知机的分词器Java实现"></span><span class="text">基于结构化平均感知机的分词器Java实现</span><span class="muted">2016-09-12</span><span class="muted">评论(0)</span></a></li>
+		<li><a target="_blank" href="http://www.hankcs.com/nlp/segment/full-text-retrieval-solr-integrated-hanlp-chinese-word-segmentation.html"><span class="thumbnail"><img src="./词性标注-码农场_files/6cbb8645jw1evbtqw5q1tj20sg0lc41n.jpg" class="thumb" alt="全文检索Solr集成HanLP中文分词" title="全文检索Solr集成HanLP中文分词"></span><span class="text">全文检索Solr集成HanLP中文分词</span><span class="muted">2015-08-23</span><span class="muted">评论(24)</span></a></li>
+		<li><a target="_blank" href="http://www.hankcs.com/nlp/segment/second-order-hidden-markov-model-trigram-chinese-participle.html"><span class="thumbnail"><img src="./词性标注-码农场_files/6cbb8645jw1ervyemf5qoj20co073aaj.jpg" class="thumb" alt="基于HMM2-Trigram字符序列标注的中文分词器Java实现" title="基于HMM2-Trigram字符序列标注的中文分词器Java实现"></span><span class="text">基于HMM2-Trigram字符序列标注的中文分词器Java实现</span><span class="muted">2015-05-07</span><span class="muted">评论(11)</span></a></li>
+		<li><a target="_blank" href="http://www.hankcs.com/program/algorithm/double-array-trie-vs-aho-corasick-double-array-trie.html"><span class="thumbnail"><img src="./词性标注-码农场_files/6cbb8645jw1ernmq25n0hj20hq0db0ul.jpg" class="thumb" alt="DoubleArrayTrie和AhoCorasickDoubleArrayTrie的实用性对比" title="DoubleArrayTrie和AhoCorasickDoubleArrayTrie的实用性对比"></span><span class="text">DoubleArrayTrie和AhoCorasickDoubleArrayTrie的实用性对比</span><span class="muted">2015-04-30</span><span class="muted">评论(9)</span></a></li>
+</ul></div><div class="widget_text widget widget_custom_html"><h3>订阅关注</h3><div class="textwidget custom-html-widget"><iframe width="100%" height="400" class="share_self" frameborder="0" scrolling="no" src="./词性标注-码农场_files/index.html"></iframe></div></div><div class="widget widget_ui_tags" style="top: 0px;"><h3>热门标签</h3><div class="d_tags"><a href="http://www.hankcs.com/tag/%e3%80%8a%e6%8c%91%e6%88%98%e7%a8%8b%e5%ba%8f%e8%ae%be%e8%ae%a1%e7%ab%9e%e8%b5%9b%e7%ac%ac2%e7%89%88%e3%80%8b/">《挑战程序设计竞赛(第2版)》 (184)</a><a href="http://www.hankcs.com/tag/%e3%80%8a%e6%97%a5%e8%af%ad%e7%bb%bc%e5%90%88%e6%95%99%e7%a8%8b%e3%80%8b/">《日语综合教程》 (57)</a><a href="http://www.hankcs.com/tag/cs224n/">CS224n (36)</a><a href="http://www.hankcs.com/tag/%e3%80%8a%e6%96%b0%e7%bc%96%e6%97%a5%e8%af%ad%e9%98%85%e8%af%bb%e6%96%87%e9%80%89%e3%80%8b/">《新编日语阅读文选》 (34)</a><a href="http://www.hankcs.com/tag/%e3%80%8a%e6%99%ba%e8%83%bdweb%e7%ae%97%e6%b3%95%e3%80%8b/">《智能Web算法》 (20)</a><a href="http://www.hankcs.com/tag/%e4%b8%ad%e6%96%87%e5%88%86%e8%af%8d/">中文分词 (19)</a><a href="http://www.hankcs.com/tag/neural-networks-for-machine-learning/">Neural Networks for Machine Learning (19)</a><a href="http://www.hankcs.com/tag/wordpress/">WordPress (17)</a><a href="http://www.hankcs.com/tag/%e6%b7%b1%e5%ba%a6%e5%ad%a6%e4%b9%a0/">深度学习 (16)</a><a href="http://www.hankcs.com/tag/lucene/">Lucene (15)</a><a href="http://www.hankcs.com/tag/%e7%bb%b4%e7%89%b9%e6%af%94%e7%ae%97%e6%b3%95/">维特比算法 (15)</a><a href="http://www.hankcs.com/tag/%e6%96%b0%e7%bc%96%e6%97%a5%e8%af%ad%e5%95%86%e5%8a%a1%e8%b4%b8%e6%98%93%e4%bc%9a%e8%af%9d/">新编日语商务贸易会话 (14)</a><a href="http://www.hankcs.com/tag/intellij-idea/">IntelliJ IDEA (13)</a><a href="http://www.hankcs.com/tag/%e3%80%8a%e7%bb%9f%e8%ae%a1%e5%ad%a6%e4%b9%a0%e6%96%b9%e6%b3%95%e3%80%8b/">《统计学习方法》 (12)</a><a href="http://www.hankcs.com/tag/uva/">UVa (11)</a><a href="http://www.hankcs.com/tag/drupal7%e4%b8%93%e4%b8%9a%e5%bc%80%e5%8f%91%e6%8c%87%e5%8d%97-%e7%ac%ac%e4%b8%89%e7%89%88/">Drupal7专业开发指南 第三版 (10)</a><a href="http://www.hankcs.com/tag/%e3%80%8a%e6%8c%91%e6%88%98%e7%bc%96%e7%a8%8b-%e7%a8%8b%e5%ba%8f%e8%ae%be%e8%ae%a1%e7%ab%9e%e8%b5%9b%e8%ae%ad%e7%bb%83%e6%89%8b%e5%86%8c%e3%80%8b/">《挑战编程-程序设计竞赛训练手册》 (10)</a><a href="http://www.hankcs.com/tag/hmm/">HMM (10)</a><a href="http://www.hankcs.com/tag/matlab/">matlab (9)</a><a href="http://www.hankcs.com/tag/tensorflow/">TensorFlow (9)</a><a href="http://www.hankcs.com/tag/cs229/">CS229 (8)</a><a href="http://www.hankcs.com/tag/word2vec/">word2vec (8)</a><a href="http://www.hankcs.com/tag/google-code-jam/">Google code jam (7)</a><a href="http://www.hankcs.com/tag/%e3%80%8ac%e6%a0%87%e5%87%86%e7%a8%8b%e5%ba%8f%e5%ba%93-%e8%87%aa%e4%bf%ae%e6%95%99%e7%a8%8b%e4%b8%8e%e5%8f%82%e8%80%83%e6%89%8b%e5%86%8c%e3%80%8b/">《C++标准程序库—自修教程与参考手册》 (7)</a><a href="http://www.hankcs.com/tag/crf/">CRF (7)</a><a href="http://www.hankcs.com/tag/yii/">Yii (6)</a><a href="http://www.hankcs.com/tag/cnn/">CNN (6)</a><a href="http://www.hankcs.com/tag/webrtc/">WebRTC (5)</a><a href="http://www.hankcs.com/tag/cocos2d-x/">Cocos2d-x (5)</a><a href="http://www.hankcs.com/tag/rnn/">RNN (5)</a></div></div></aside></section>
+
+<div class="branding branding-black">
+	<div class="container">
+		<h2>我的开源项目</h2>
+		<a target="blank" class="btn btn-lg" href="https://github.com/hankcs/HanLP">HanLP自然语言处理包</a><a target="blank" class="btn btn-lg" href="https://github.com/hankcs/AhoCorasickDoubleArrayTrie">基于DoubleArrayTrie的Aho Corasick自动机</a>	</div>
+</div>
+<footer class="footer">
+	<div class="container">
+		<div class="fcode">
+					</div>
+		<p>© 2018 <a href="http://www.hankcs.com/">码农场</a> &nbsp; <a href="http://www.hankcs.com/sitemap.xml">网站地图</a> &nbsp; <a href="http://www.miitbeian.gov.cn/" target="_blank">沪ICP备14002007号-1</a></p>
+		<div style="display:none">
+<script language="javascript" type="text/javascript" src="./词性标注-码农场_files/trace.js.下载"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-47205472-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</div>	</div>
+</footer>
+
+<script>
+window.jsui={
+    www: 'http://www.hankcs.com',
+    uri: 'http://www.hankcs.com/wp-content/themes/dux',
+    ver: '1.3',
+	roll: ["1","2","6","4"],
+    ajaxpager: '500',
+    url_rp: 'http://www.hankcs.com/about/'
+};
+</script>
+<script type="text/javascript" src="./词性标注-码农场_files/bootstrap.min.js.下载"></script>
+<script type="text/javascript" src="./词性标注-码农场_files/loader.js.下载"></script>
+<script type="text/javascript" src="./词性标注-码农场_files/wp-embed.min.js.下载"></script>
+<script async="async" type="text/javascript" src="./词性标注-码农场_files/form.js.下载"></script>
+
+    <div class="m-mask"></div>    <div class="rollbar" style="display: block;"><ul><li><a href="javascript:(scrollTo());"><i class="fa fa-angle-up"></i></a><h6>去顶部<i></i></h6></li><li><a href="javascript:(on_click_toc_button());"><i class="fa fa-list post_open_icon"></i></a><h6 id="toc_label">打开目录<i></i></h6></li><li><a href="javascript:(scrollTo(&#39;#comments&#39;,-15));"><i class="fa fa-comments"></i></a><h6>去评论<i></i></h6></li></ul></div><ul class="m-navbar">
+			<li id="menu-item-1834" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1834"><a href="http://www.hankcs.com/program/cpp/">C++</a></li>
+<li id="menu-item-1835" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1835"><a href="http://www.hankcs.com/program/java/">Java</a></li>
+<li id="menu-item-5754" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5754"><a href="http://www.hankcs.com/ml/">机器学习</a></li>
+<li id="menu-item-2954" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children menu-item-2954"><a href="http://www.hankcs.com/nlp/">NLP</a>
+<ul class="sub-menu">
+	<li id="menu-item-4344" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4344"><a href="http://www.hankcs.com/nlp/corpus/">语料库</a></li>
+	<li id="menu-item-4342" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-4342"><a href="http://www.hankcs.com/nlp/segment/">中文分词</a></li>
+	<li id="menu-item-4343" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4343"><a href="http://www.hankcs.com/nlp/ner/">命名实体识别</a></li>
+	<li id="menu-item-4479" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4479"><a href="http://www.hankcs.com/nlp/parsing/">句法分析</a></li>
+</ul>
+</li>
+<li id="menu-item-1837" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1837"><a href="http://www.hankcs.com/program/algorithm/">算法</a></li>
+<li id="menu-item-1839" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1839"><a href="http://www.hankcs.com/software/">软件</a></li>
+<li id="menu-item-1838" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1838"><a href="http://www.hankcs.com/nihongonote/">日语</a>
+<ul class="sub-menu">
+	<li id="menu-item-1860" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1860"><a href="http://www.hankcs.com/nihongonote/riyurimen/">日语入门</a></li>
+	<li id="menu-item-1861" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1861"><a href="http://www.hankcs.com/nihongonote/listening/">日语听力</a></li>
+	<li id="menu-item-1863" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1863"><a href="http://www.hankcs.com/nihongonote/tekusuto/">日语综合教程</a>
+	<ul class="sub-menu">
+		<li id="menu-item-2190" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2190"><a href="http://www.hankcs.com/nihongonote/tekusuto/disance/">第三册</a></li>
+		<li id="menu-item-2192" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2192"><a href="http://www.hankcs.com/nihongonote/tekusuto/daiyonnsatu/">第四册</a></li>
+		<li id="menu-item-2191" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2191"><a href="http://www.hankcs.com/nihongonote/tekusuto/5/">第五册</a></li>
+		<li id="menu-item-2702" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2702"><a href="http://www.hankcs.com/nihongonote/tekusuto/%e7%ac%ac%e5%85%ad%e5%86%8c/">第六册</a></li>
+		<li id="menu-item-3604" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3604"><a href="http://www.hankcs.com/nihongonote/tekusuto/%e7%ac%ac%e4%b8%83%e5%86%8c/">第七册</a></li>
+	</ul>
+</li>
+	<li id="menu-item-1859" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1859"><a href="http://www.hankcs.com/nihongonote/fd2/">新编日语阅读文选</a>
+	<ul class="sub-menu">
+		<li id="menu-item-2187" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2187"><a href="http://www.hankcs.com/nihongonote/fd2/c1/">第一册</a></li>
+		<li id="menu-item-2189" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2189"><a href="http://www.hankcs.com/nihongonote/fd2/c2/">第二册</a></li>
+		<li id="menu-item-2188" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2188"><a href="http://www.hankcs.com/nihongonote/fd2/c3/">第三册</a></li>
+	</ul>
+</li>
+	<li id="menu-item-1858" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1858"><a href="http://www.hankcs.com/nihongonote/jpkaiwa/">日语商务贸易会话</a></li>
+</ul>
+</li>
+<li id="menu-item-1843" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1843"><a href="http://www.hankcs.com/about/">关于</a></li>
+							<li class="navto-search"><a href="javascript:;" class="search-show active"><i class="fa fa-search"></i></a></li>
+					</ul>			<div class="sign">			    <div class="sign-mask"></div>			    <div class="container">			        <a href="http://www.hankcs.com/nlp/part-of-speech-tagging.html#" class="close-link signclose-loader"><i class="fa fa-close"></i></a>			        <div class="sign-tips"></div>			        <form id="sign-in">  			            <h3><small class="signup-loader">切换注册</small>登录</h3>			            <h6>			                <label for="inputEmail">用户名或邮箱</label>			                <input type="text" name="username" class="form-control" id="inputEmail" placeholder="用户名或邮箱">			            </h6>			            <h6>			                <label for="inputPassword">密码</label>			                <input type="password" name="password" class="form-control" id="inputPassword" placeholder="登录密码">			            </h6>			            <div class="sign-submit">			                <input type="button" class="btn btn-primary signsubmit-loader" name="submit" value="登录">  			                <input type="hidden" name="action" value="signin">			                <label><input type="checkbox" checked="checked" name="remember" value="forever">记住我</label>			            </div><div class="sign-info"><a href="http://www.hankcs.com/about/">找回密码？</a></div></form>			        <form id="sign-up"> 			            <h3><small class="signin-loader">切换登录</small>注册</h3>			            <h6>			                <label for="inputName">昵称</label>			                <input type="text" name="name" class="form-control" id="inputName" placeholder="设置昵称">			            </h6>			            <h6>			                <label for="inputEmail">邮箱</label>			                <input type="email" name="email" class="form-control" id="inputEmail" placeholder="邮箱">			            </h6>			            <div class="sign-submit">			                <input type="button" class="btn btn-primary btn-block signsubmit-loader" name="submit" value="快速注册">  			                <input type="hidden" name="action" value="signup">  			            </div>			        </form>			    </div>			</div>		</body></html>

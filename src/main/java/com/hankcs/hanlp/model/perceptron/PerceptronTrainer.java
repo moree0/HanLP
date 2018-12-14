@@ -123,6 +123,14 @@ public abstract class PerceptronTrainer extends InstanceConsumer
         tagSet.lock();
         logger.finish("\n加载完毕，实例一共%d句，特征总数%d\n", instances.length, mutableFeatureMap.size() * tagSet.size());
 
+        if(HanLP.Config.DEBUG) {
+            if(HanLP.Config.fileWriter!=null) {
+                HanLP.Config.fileWriter.close();
+            }
+            System.exit(0);
+        }
+
+
         // 开始训练
         ImmutableFeatureMap immutableFeatureMap = new ImmutableFeatureMap(mutableFeatureMap.featureIdMap, tagSet);
         mutableFeatureMap = null;
