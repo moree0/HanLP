@@ -13,6 +13,8 @@ HanLP是一系列模型与算法组成的NLP工具包，由大快搜索主导并
 
 HanLP提供下列功能：
 
+  人民日报语料98，可以获取标注语料
+
 * 中文分词
     * HMM-Bigram（速度与精度最佳平衡；一百兆内存）
         * [最短路分词](https://github.com/hankcs/HanLP#1-%E7%AC%AC%E4%B8%80%E4%B8%AAdemo)、[N-最短路分词](https://github.com/hankcs/HanLP#5-n-%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E5%88%86%E8%AF%8D)
